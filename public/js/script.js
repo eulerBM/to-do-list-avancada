@@ -4,7 +4,7 @@ export function redirectAfterSuccess(result) {
 
         setTimeout(() => {
 
-            window.location.href = 'dashboard.php';
+            window.location.href = '/dashboard';
             
         }, 3000);
     }

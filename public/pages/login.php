@@ -1,21 +1,28 @@
 <?php include 'includes/header.php'; ?>
 
+<link rel="stylesheet" href="../css/login.css">
 
 <div class="container">
 
     <form id="userForm">
 
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Email</label>
-            <input name="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" require>
+        <div class="mb-3 text-center col-6 mx-auto">
+
+          <label for="exampleFormControlInput1" class="form-label">Email</label>
+          <input name="email" class="form-control form-control-sm" id="exampleFormControlInput1" placeholder="Exemplo@email.com" require>
+
+        </div>
+        
+        <div class="mb-3 text-center col-6 mx-auto">
+
+          <label for="inputPassword1" class="form-label">Senha</label>
+          <input type="password" name="password" id="inputPassword1" class="form-control form-control-sm" aria-describedby="passwordHelpBlock" placeholder="Digite sua senha" require>
+
         </div>
 
-        <label for="inputPassword1" class="form-label">Password</label>
-        <input name="password" id="inputPassword1" class="form-control" aria-describedby="passwordHelpBlock" require>
+        <div class="mb-3 text-center col-6 mx-auto">
 
-        <div class="mb-3">
-
-            <button type="submit" class="btn btn-success">Entrar</button>
+          <button type="submit" class="btn btn-danger">Entrar</button>
 
         </div>
         

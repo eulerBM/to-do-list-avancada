@@ -1,0 +1,33 @@
+.navbar-custom {
+      background: linear-gradient(90deg, #0c0c0c 0%, #1a0000 100%);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .navbar-brand {
+      font-weight: 600;
+      font-size: 1.3rem;
+    }
+
+    .navbar-brand span.red {
+      color: #ff1a1a;
+    }
+
+    .nav-link {
+      color: #ccc !important;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover {
+      color: #fff !important;
+    }
+
+    .btn-acesso {
+      background-color: #d40000;
+      color: #fff;
+      border: none;
+      transition: 0.2s;
+    }
+
+    .btn-acesso:hover {
+      background-color: #ff1a1a;
+    }

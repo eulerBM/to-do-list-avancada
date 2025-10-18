@@ -22,7 +22,8 @@ class Migration {
         try {
 
             $this->pdo->exec($sql);
-            echo "Tabela 'users' criada com sucesso!<br>";
+
+            echo "<script>console.log('Tabela \"users\" criada com sucesso!');</script>";
 
         } catch (PDOException $e) {
 

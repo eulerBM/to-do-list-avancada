@@ -1,0 +1,18 @@
+.form-label {
+    color: #ffffff;
+    margin-left: 0%;
+
+}
+
+#userForm{
+    margin-top: 1%;
+    margin-left: 10%;
+    background-color: #1c1c1c;
+    padding: 3rem;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    width: 100%;
+    max-width: 80%;
+
+}
+

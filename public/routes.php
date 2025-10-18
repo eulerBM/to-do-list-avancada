@@ -18,6 +18,14 @@ function handleRoutes()
             require __DIR__ . '/pages/register.php';
             break;
 
+        case '/dashboard':
+            require __DIR__ . '/pages/dashboard.php';
+            break;
+
+        case '/logout':
+            require __DIR__ . '/pages/logout.php';
+            break;
+
         default:
             require __DIR__ . '/pages/notfound.php';
             break;
