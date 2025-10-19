@@ -54,16 +54,22 @@ session_start();
                 </div>
 
                 <div class="modal-body">
-                    <form action="salvar_tarefa.php" method="POST">
+
+                    <form id="deletTask">
+
+                        <div class="mb-3 text-center">
+                            <label for="titulo" class="form-label">Título: </label>
+                        </div>
+
                         <div class="mb-3 text-center">
                             <label for="titulo" class="form-label">Título</label>
                             <input type="text" class="form-control form-control-sm" id="titulo" name="titulo" placeholder="Digite o título" required>
                         </div>
-                        
+
                         <div class="mb-3 text-center">
                             <button type="submit" class="btn btn-primary">Excluir</button>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
@@ -127,7 +133,7 @@ session_start();
                 </div>
 
                 <div class="modal-body">
-                    <form action="salvar_tarefa.php" method="POST">
+                    <form id="formTaskCreator">
                         <div class="mb-3 text-center">
                             <label for="titulo" class="form-label">Título</label>
                             <input type="text" class="form-control form-control-sm" id="titulo" name="titulo" placeholder="Digite o título" required>
@@ -136,13 +142,15 @@ session_start();
                             <label for="descricao" class="form-label">Descrição</label>
                             <textarea class="form-control form-control-sm" id="descricao" name="descricao" rows="3" placeholder="Descrição"></textarea>
                         </div>
+
                         <div class="mb-3 text-center">
                             <label for="grupo" class="form-label">Grupo</label>
-                            <input type="text" class="form-control form-control-sm" id="grupo" name="grupo" placeholder="Digite o email de cada pessoa" required>
+                            <input type="email" class="form-control form-control-sm" id="grupo" name="grupo[]" placeholder="Digite os e-mails dos usuários" multiple required>
+                            <small class="form-text text-muted">Separe os e-mails por vírgula.</small>
                         </div>
                         <div class="mb-3 text-center">
                             <label for="dataHora" class="form-label">Data limite</label>
-                            <input type="datetime-local" class="form-control form-control-sm" id="dataHora" name="dataHora" required>
+                            <input type="datetime-local" class="form-control form-control-sm" id="dataHora" name="dateLimit" required>
                         </div>
                         <div class="mb-3 text-center">
                             <button type="submit" class="btn btn-primary">Criar</button>
@@ -155,5 +163,27 @@ session_start();
     </div>
 
 </div>
+
+<script type="module">
+
+    import { fetchCreateTask } from "./js/api.js"
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("formTaskCreator");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            console.log("Enviando dados:", data);
+
+            return fetchCreateTask(data)
+
+        })
+    })
+
+</script>
 
 <?php include 'includes/footer.php'; ?>
