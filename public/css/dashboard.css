@@ -3,6 +3,36 @@
 
 }
 
+.modal-content {
+  background-color: #2c2c2c9a; /* Cinza escuro */
+  color: white; /* Texto branco */
+  border: none;
+}
+
+/* Inputs e textarea */
+.modal-content .form-control {
+  background-color: #3a3a3a; /* Cinza levemente mais claro que o fundo */
+  color: white;              /* Texto branco */
+  border: 1px solid #555;    /* Borda sutil */
+}
+
+/* Placeholder (texto de dica dentro do input) */
+.modal-content .form-control::placeholder {
+  color: #bbb; /* Cinza claro */
+}
+
+/* Foco no input */
+.modal-content .form-control:focus {
+  background-color: #4a4a4a;
+  color: white;
+  border-color: #888;
+  box-shadow: none; /* Remove o brilho azul padrão do Bootstrap */
+}
+
+/* Labels */
+.modal-content .form-label {
+  color: #ddd;
+}
 #divMain{
     margin-top: 1%;
     margin-left: 10%;

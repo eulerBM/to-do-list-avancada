@@ -8,5 +8,8 @@ class Setup {
         $pdo = Database::getConnection();
         $migration = new Migration($pdo);
         $migration->createUsersTable();
+        $migration->createTaskTable();
+        $migration->createTaskUsersTable();
+        
     }
 }
