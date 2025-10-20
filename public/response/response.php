@@ -35,6 +35,22 @@ class response{
 
     }
 
+    public function getAllTasks($status, $tasks){
+
+        $data = [
+
+            "status" => $status,
+            "tasks" => $tasks
+            
+        ];
+
+        header("Content-Type: application/json");
+
+        echo json_encode($data);
+        exit;
+
+    }
+
     public function taskCreate($status, $message){
 
         $data = [

@@ -77,6 +77,7 @@ class userService{
 
             $_SESSION['user'] = [
                 'id' => $user['id'],
+                'idPublic' => $user['idPublic'],
                 'name' => $user['name'],
                 'email' => $user['email']
             ];

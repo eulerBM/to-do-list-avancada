@@ -47,11 +47,35 @@ class taskService{
         }
     }
 
-    public function delete($idTask){
+    public function getTasks($idUser){
 
         try{
 
+            $tasks = $this->taskRepository->getTasks($idUser);
+
+            error_log("Tasks: " . print_r($tasks, true));
+
+            if($tasks['isOk'] === false){
+
+                $this->response->error(400, "Erro ao buscar as tarefas do usuario.");
+
+            }
+
+            $this->response->getAllTasks(200, $tasks['data']);
+
+        }
+        
+        catch (Exception $e){
+
+            $this->response->error(500, "Erro interno: " . $e->getMessage());
             
+        }
+
+    }
+
+    public function delete($idTask){
+
+        try{
 
             $this->response->taskCreate(201, "Tarefa criada.");
 

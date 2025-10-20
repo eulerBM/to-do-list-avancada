@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $descricao = trim($data["descricao"]) ?? null;
     $grupo = trim($data["grupo"]) ?? null;
     $dateLimit = trim($data["dateLimit"]) ?? null;
-    $userCreatorId = $_SESSION['user']['id'] ?? null;
+    $userCreatorId = $_SESSION['user']['idPublic'] ?? null;
 
     $taskService->create($titulo, $descricao, $grupo, $dateLimit, $userCreatorId);
 
