@@ -25,18 +25,8 @@ session_start();
 
             <li class="list-group-item">
 
-                <strong>Título:</strong> Comprar leite<br>
-                <strong>Descrição:</strong> Leite integral para o café da manhã<br>
-                <strong>Situação:</strong> <span class="badge text-bg-warning">Pendente</span> <span class="badge text-bg-success">Concluida</span><br>
-                <strong>Grupo:</strong> 4 pessoas<br>
-                <strong>Data criação:</strong> 2025-10-20 08:00<br>
-                <strong>Data limite:</strong> 2025-10-20 08:00<br>
-                <strong>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTarefaCriar">Editar</button>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTarefaExcluir">Excluir</button>
-                </strong>
-
-
+                <!-- TAREFAS VAO AQUI -->
+                
 
             </li>
             <li class="list-group-item text-muted text-center">📋 Nenhuma tarefa encontrada.</li>
@@ -55,7 +45,7 @@ session_start();
 
                 <div class="modal-body">
 
-                    <form id="deletTask">
+                    <form id="formDeletTask">
 
                         <div class="mb-3 text-center">
                             <label for="titulo" class="form-label">Título: </label>
@@ -207,7 +197,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <strong>Data limite:</strong> ${task.timeout}<br>
           <strong>
             <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTarefaEditar">Editar</button>
-            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTarefaExcluir">Excluir</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTarefaExcluir" data-id="${task.idPublic}">Excluir</button>
           </strong>
         </li>
       `;
@@ -233,6 +223,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     //Criar task
     document.addEventListener("DOMContentLoaded", () => {
         const form = document.getElementById("formTaskCreator");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            console.log("Enviando dados:", data);
+
+            return fetchCreateTask(data)
+
+        })
+    })
+
+    //Deleta task
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("formDeletTask");
 
         form.addEventListener("submit", async (e) => {
             e.preventDefault();

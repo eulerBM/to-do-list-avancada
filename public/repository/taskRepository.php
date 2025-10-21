@@ -79,25 +79,44 @@ class taskRepository {
 
     }
 
-    public function editTask($titulo, $descricao, $grupo, $dateLimit, $idTask){
-
-
-    }
-
-    public function deleteById($idTask){
+    public function editTask($titulo, $descricao, $situation, $grupo, $dateLimit, $idTask, $idPublicUser){
 
         try{
 
             $stmt = $this->pdo->prepare("
-                DELETE FROM task WHERE idPublic = :idPublic
+                DELETE FROM task WHERE idPublic = :idPublic AND user_creator_id = :userId
             ");
 
             $stmt->execute([
-                ':idPublic' => $idTask
+                ':idPublic' => $idTask,
+                ':userId' => $idPublicUser
     
             ]);
 
-            return true;
+            return $stmt->rowCount() > 0;
+
+        } catch (PDOException $e){
+            
+            return false;
+            
+        }
+    }
+
+    public function deleteTaskById($idTask, $idPublicUser){
+
+        try{
+
+            $stmt = $this->pdo->prepare("
+                DELETE FROM task WHERE idPublic = :idPublic AND user_creator_id = :userId
+            ");
+
+            $stmt->execute([
+                ':idPublic' => $idTask,
+                ':userId' => $idPublicUser
+    
+            ]);
+
+            return $stmt->rowCount() > 0;
 
         } catch (PDOException $e){
             

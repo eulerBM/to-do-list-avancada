@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
 $response = new Response();
 
-$response->error(405, "Método não permitido. Use POST.");
+$response->error(405, "Método não permitido. Use GET.");
 
 }
 

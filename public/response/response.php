@@ -64,6 +64,19 @@ class response{
         exit;
     }
 
+    public function taskDelete($status, $message){
+
+        $data = [
+            "status" => $status,
+            "message" => $message
+        ];
+
+        header("Content-Type: application/json");
+
+        echo json_encode($data);
+        exit;
+    }
+
     public function error($status, $message){
 
         $data = [

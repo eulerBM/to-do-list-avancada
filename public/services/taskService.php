@@ -47,6 +47,33 @@ class taskService{
         }
     }
 
+    public function edit($titulo, $descricao, $situation, $grupo, $dateLimit, $idTask, $idPublicUser){
+
+        try{
+
+            $this->validade->requestTaskEdit($titulo, $descricao, $situation, $grupo, $dateLimit, $idTask, $idPublicUser);
+
+            $taskEdit = $this->taskRepository->editTask($titulo, $descricao, $situation, $grupo, $dateLimit, $idTask, $idPublicUser);
+
+            if(!$taskEdit){
+
+                $this->response->error(400, "Erro ao editar a task no banco.");
+
+            }
+
+            $this->response->taskCreate(201, "Tarefa editada.");
+
+        } catch (ValidationException $e){
+
+            $this->response->error($e->getStatus(), $e->getMessage());
+
+        } catch (Exception $e){
+
+            $this->response->error(500, "Erro interno: " . $e->getMessage());
+            
+        }
+    }
+
     public function getTasks($idUser){
 
         try{
@@ -73,11 +100,21 @@ class taskService{
 
     }
 
-    public function delete($idTask){
+    public function delete($idTask, $idPublicUser){
 
         try{
 
-            $this->response->taskCreate(201, "Tarefa criada.");
+            $this->validade->requestTaskDelete($idTask, $idPublicUser);
+
+            $isDelete = $this->taskRepository->deleteTaskById($idTask, $idPublicUser);
+
+            if(!$isDelete){
+
+                $this->response->error(404, "Tarefa não encontrada.");
+
+            }
+
+            $this->response->taskDelete(200, "Tarefa: " . $idTask .  " deletada com sucesso.");
 
         } catch (ValidationException $e){
 
