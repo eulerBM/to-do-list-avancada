@@ -1,5 +1,7 @@
-<?php include 'includes/header.php';
+<?php
 session_start();
+include 'includes/header.php';
+
 ?>
 
 <link rel="stylesheet" href="../css/dashboard.css">
@@ -26,11 +28,23 @@ session_start();
             <li class="list-group-item">
 
                 <!-- TAREFAS VAO AQUI -->
-                
+
 
             </li>
             <li class="list-group-item text-muted text-center">📋 Nenhuma tarefa encontrada.</li>
         </ul>
+
+        <!-- BOTÃO DE PAGINAÇÃO -->
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+
+            <ul class="pagination" id="list-total-pages">
+
+                <!-- BOTAO PAGINAÇÃO VAI AQUI -->
+
+                </li>
+            </ul>
+        </nav>
+
     </div>
 
     <!-- Modal para excluir -->
@@ -155,105 +169,102 @@ session_start();
 </div>
 
 <script type="module">
+    import {
+        fetchCreateTask,
+        fetchDeleteTask
+    } from "./js/api.js";
+    import {
+        renderTasks
+    } from "./js/renderTasks.js";
 
-    import { fetchCreateTask, fetchAllTask } from "./js/api.js"
+    let currentPage = 1;
 
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    const result = await fetchAllTask();
+    // dentro do módulo
+    window.deleteTask = function(nameTask, idTask) {
 
-    console.log("Tarefas do usuário:", result);
+        const confirmDelete = confirm("Você tem certeza que quer excluir a tarefa: " + nameTask);
+        if (!confirmDelete) return;
 
-    const list = document.getElementById("task-list");
-    if (!list) {
-      console.error("Elemento #task-list não encontrado!");
-      return;
-    }
+        return fetchDeleteTask(idTask);
+        
+    };
 
-    list.innerHTML = ""; // limpa lista anterior
+    document.addEventListener("DOMContentLoaded", () => {
 
-    // Se não houver tarefas:
-    if (!result.tasks || result.tasks.length === 0) {
-      list.innerHTML = `
-        <li class="list-group-item text-muted text-center">
-          📋 Nenhuma tarefa encontrada.
-        </li>
-      `;
-      return;
-    }
+        // ========================
+        // 🔹 Renderizar Tarefas (Página Atual)
+        // ========================
+        renderTasks("task-list", currentPage);
 
-    // Se houver tarefas, renderiza cada uma:
-    result.tasks.forEach(task => {
-      const statusBadge = task.situation == 0
-        ? '<span class="badge text-bg-warning">Pendente</span>'
-        : '<span class="badge text-bg-success">Concluída</span>';
+        // ========================
+        // 📝 Criar Tarefa
+        // ========================
+        const formCreate = document.getElementById("formTaskCreator");
+        if (formCreate) {
+            formCreate.addEventListener("submit", async (e) => {
+                e.preventDefault();
 
-      const itemHTML = `
-        <li class="list-group-item">
-          <strong>Título:</strong> ${task.title}<br>
-          <strong>Descrição:</strong> ${task.description}<br>
-          <strong>Situação:</strong> ${statusBadge}<br>
-          <strong>Data criação:</strong> ${task.created_at}<br>
-          <strong>Data limite:</strong> ${task.timeout}<br>
-          <strong>
-            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTarefaEditar">Editar</button>
-            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTarefaExcluir" data-id="${task.idPublic}">Excluir</button>
-          </strong>
-        </li>
-      `;
+                const formData = new FormData(formCreate);
+                const data = Object.fromEntries(formData.entries());
 
-      list.innerHTML += itemHTML;
+                console.log("🟢 Enviando dados (criar):", data);
+
+                try {
+                    await fetchCreateTask(data);
+                    renderTasks("task-list", currentPage); // Recarrega tarefas
+                } catch (err) {
+                    console.error("Erro ao criar tarefa:", err);
+                }
+            });
+        }
+
+        // ========================
+        // 🗑️ Deletar Tarefa
+        // ========================
+        const formDelete = document.getElementById("formDeletTask");
+        if (formDelete) {
+            formDelete.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(formDelete);
+                const data = Object.fromEntries(formData.entries());
+
+                console.log("🔴 Enviando dados (deletar):", data);
+
+                try {
+                    await fetchCreateTask(data);
+                    renderTasks("task-list", currentPage); // Recarrega tarefas
+                } catch (err) {
+                    console.error("Erro ao deletar tarefa:", err);
+                }
+            });
+        }
+
+        // ========================
+        // 📄 Paginação (se quiser integrar aqui)
+        // ========================
+        const pagination = document.querySelector(".pagination");
+        if (pagination) {
+            pagination.addEventListener("click", (e) => {
+                e.preventDefault();
+                const target = e.target.closest(".page-link");
+                if (!target) return;
+
+                const label = target.getAttribute("aria-label");
+                const pageText = target.textContent.trim();
+
+                if (!isNaN(pageText)) {
+                    currentPage = Number(pageText);
+                } else if (label === "Next") {
+                    currentPage++;
+                } else if (label === "Previous" && currentPage > 1) {
+                    currentPage--;
+                }
+
+                renderTasks("task-list", currentPage);
+            });
+        }
     });
-
-  } catch (error) {
-    console.error("Erro ao buscar tarefas:", error);
-    const list = document.getElementById("task-list");
-    if (list) {
-      list.innerHTML = `
-        <li class="list-group-item text-danger text-center">
-          ❌ Erro ao carregar tarefas.
-        </li>
-      `;
-    }
-  }
-});
-
-
-
-    //Criar task
-    document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("formTaskCreator");
-
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-
-            console.log("Enviando dados:", data);
-
-            return fetchCreateTask(data)
-
-        })
-    })
-
-    //Deleta task
-    document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("formDeletTask");
-
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-
-            console.log("Enviando dados:", data);
-
-            return fetchCreateTask(data)
-
-        })
-    })
-
 </script>
 
 <?php include 'includes/footer.php'; ?>

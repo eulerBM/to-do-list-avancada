@@ -74,11 +74,11 @@ class taskService{
         }
     }
 
-    public function getTasks($idUser){
+    public function getTasks($idUser, $page){
 
         try{
 
-            $tasks = $this->taskRepository->getTasks($idUser);
+            $tasks = $this->taskRepository->getTasks($idUser, $page);
 
             error_log("Tasks: " . print_r($tasks, true));
 
@@ -88,7 +88,7 @@ class taskService{
 
             }
 
-            $this->response->getAllTasks(200, $tasks['data']);
+            $this->response->getAllTasks(200, $tasks['data'], $tasks['totalPages']);
 
         }
         

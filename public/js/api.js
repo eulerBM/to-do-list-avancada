@@ -30,11 +30,11 @@ export async function  fetchCreateTask(data) {
     }
 };
 
-export async function fetchAllTask() {
+export async function fetchAllTask(page) {
 
     try {
 
-        const response = await fetch("controller/getTaskController.php", {
+        const response = await fetch(`controller/getTaskController.php?page=${page}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -52,6 +52,10 @@ export async function fetchAllTask() {
 
         }
 
+        if(!localStorage.getItem("totalPages")){
+            localStorage.setItem("totalPages", result.totalPages)
+        }
+        
         return result;
 
     } catch (error) {
@@ -94,7 +98,7 @@ export async function fetchEditTask() {
     }
 };
 
-export async function fetchDeleteTask(data) {
+export async function fetchDeleteTask(idTask) {
 
     try {
 
@@ -103,7 +107,7 @@ export async function fetchDeleteTask(data) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify({ idTask }),
             credentials: "include"
         });
 
@@ -113,7 +117,7 @@ export async function fetchDeleteTask(data) {
 
         if (result.status >= 200){
 
-            showAlert(result.status, "Tarefas encontradas")
+            showAlert(result.status, result.message)
 
         }
 

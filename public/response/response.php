@@ -35,12 +35,13 @@ class response{
 
     }
 
-    public function getAllTasks($status, $tasks){
+    public function getAllTasks($status, $tasks, $totalPages){
 
         $data = [
 
             "status" => $status,
-            "tasks" => $tasks
+            "tasks" => $tasks,
+            "totalPages" => $totalPages
             
         ];
 

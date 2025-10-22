@@ -7,9 +7,10 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
     $taskService = new TaskService();
 
+    $page = $_GET['page'] ?? 1;   // valor padrão 1
     $userCreatorId = $_SESSION['user']['idPublic'] ?? null;
     
-    $taskService->getTasks($userCreatorId);
+    $taskService->getTasks($userCreatorId, $page);
 
 } else {
 

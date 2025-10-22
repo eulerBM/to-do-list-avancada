@@ -35,13 +35,27 @@ class taskRepository {
         }
     }
 
-    public function getTasks($userId, $pagina = 1, $limite = 10){
+    public function getTasks($userId, $page){
 
         error_log("UUID do user" . $userId);
+        $limite = 1;
 
         try {
+
+        // 1️⃣ Conta total de tarefas do usuário
+        $countStmt = $this->pdo->prepare("
+            SELECT COUNT(*) as total
+            FROM task
+            WHERE user_creator_id = :userId
+        ");
+        $countStmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+        $countStmt->execute();
+        $totalTasks = (int) $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+        $totalPages = ceil($totalTasks / $limite);
+
         // Calcula o offset (de onde começa)
-        $offset = ($pagina - 1) * $limite;
+        $offset = ($page - 1) * $limite;
 
             // Prepara a query paginada
         $stmt = $this->pdo->prepare("
@@ -66,7 +80,8 @@ class taskRepository {
 
         return [
             'isOk' => true,
-            'data' => $tasks
+            'data' => $tasks,
+            'totalPages' =>  $totalPages
         ];
 
     } catch (PDOException $e) {
