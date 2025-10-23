@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] === "DELETE") {
     
     $idTask = trim($data["idTask"]) ?? null;
     $userIdPublic = $_SESSION['user']['idPublic'] ?? null;
-   
+
     $taskService->delete($idTask, $userIdPublic);
 
 } else {

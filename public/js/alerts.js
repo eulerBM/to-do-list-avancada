@@ -1,28 +1,30 @@
-export function showAlert(status, message) {
+export function showAlert(status, message, show = true) {
 
-    function createAlert(messageJson, type){
+  if (!show) return;
 
-        const alert = document.createElement("div");
-        alert.className = `alert alert-${type}`;
-        alert.role = "alert";
-        alert.textContent = messageJson;
+    function createAlert(messageJson, type) {
 
-        document.body.prepend(alert);
+      const alert = document.createElement("div");
+      alert.className = `alert alert-${type}`;
+      alert.role = "alert";
+      alert.textContent = messageJson;
 
-        setTimeout(() => alert.remove(), 5000);
+      document.body.prepend(alert);
+
+      setTimeout(() => alert.remove(), 5000);
 
     }
 
-  if(status >= 500){
+  if (status >= 500) {
     return createAlert(message, "danger")
   }
-  if(status >= 400){
+  if (status >= 400) {
     return createAlert(message, "warning")
   }
-  if(status >= 300){
+  if (status >= 300) {
     return createAlert(message, "info")
   }
-  if(status >= 200){
+  if (status >= 200) {
     return createAlert(message, "success")
   }
 }

@@ -1,11 +1,12 @@
 import { fetchAllTask } from "./api.js";
+import { formatDate } from "./utils/formateDate.js";
 
-export async function renderTasks(listId = "task-list", page) {
+export async function renderTasks(listId = "task-list", page = 1) {
+
   try {
-    const result = await fetchAllTask(page);
-    console.log("Tarefas do usuário:", result);
 
-    console.log(result.totalPages)
+    const result = await fetchAllTask(page);
+    
 
     //Paginação
     const listPages = document.getElementById("list-total-pages")
@@ -16,18 +17,16 @@ export async function renderTasks(listId = "task-list", page) {
 
     let totalPages = Number(localStorage.getItem("totalPages")) || 0;
 
-    listPages.querySelectorAll(".page-item:not(:first-child):not(:last-child)").forEach(li => li.remove());
+    listPages.querySelectorAll(".page-item").forEach(li => li.remove());
 
     for(let i = 1; i <= totalPages; i++){
 
       const itemHTML = `
-        <li class="page-item"><a class="page-link">${i}</a></li>
+        <li class="page-item"><a class="page-link" onclick="changePageTask(${i})">${i}</a></li>
       `;
-      
     
       listPages.innerHTML += itemHTML;
       
-
     }
 
 
@@ -53,8 +52,13 @@ export async function renderTasks(listId = "task-list", page) {
 
     // Renderiza as tarefas
     result.tasks.forEach(task => {
+      const statusForText =
+        task.situation === 0
+          ? "pendente"
+          : "concluída";
+
       const statusBadge =
-        task.situation == 0
+        task.situation === 0
           ? '<span class="badge text-bg-warning">Pendente</span>'
           : '<span class="badge text-bg-success">Concluída</span>';
 
@@ -63,10 +67,10 @@ export async function renderTasks(listId = "task-list", page) {
           <strong>Título:</strong> ${task.title}<br>
           <strong>Descrição:</strong> ${task.description}<br>
           <strong>Situação:</strong> ${statusBadge}<br>
-          <strong>Data criação:</strong> ${task.created_at}<br>
-          <strong>Data limite:</strong> ${task.timeout}<br>
+          <strong>Data criação:</strong> ${formatDate(task.created_at)}<br>
+          <strong>Data limite:</strong> ${formatDate(task.timeout)}<br>
           <strong>
-            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTarefaEditar">Editar</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="editTask('${task.title}', '${task.description}', '${statusForText}', 'null', '${task.timeout}', '${task.idPublic}')">Editar</button>
             <button type="button" class="btn btn-outline-secondary" onclick="deleteTask('${task.title}', '${task.idPublic}')">Excluir</button>
           </strong>
         </li>

@@ -16,6 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] === "PATCH") {
     $idTask = trim($data["idTask"]) ?? null;
     $idPublicUser = $_SESSION['user']['idPublic'] ?? null;
 
+    error_log("Erro ao editar: " . json_encode([
+    'titulo' => $titulo,
+    'descricao' => $descricao,
+    'situation' => $situation,
+    'grupo' => $grupo,
+    'idTask' => $idTask
+]));
+    
     $taskService->edit($titulo, $descricao, $situation, $grupo, $dateLimit, $idTask, $idPublicUser);
 
 } else {

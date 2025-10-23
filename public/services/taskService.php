@@ -53,7 +53,7 @@ class taskService{
 
             $this->validade->requestTaskEdit($titulo, $descricao, $situation, $grupo, $dateLimit, $idTask, $idPublicUser);
 
-            $taskEdit = $this->taskRepository->editTask($titulo, $descricao, $situation, $grupo, $dateLimit, $idTask, $idPublicUser);
+            $taskEdit = $this->taskRepository->editTask($titulo, $descricao, $situation, $dateLimit, $idTask, $idPublicUser);
 
             if(!$taskEdit){
 

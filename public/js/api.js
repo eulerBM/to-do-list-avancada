@@ -48,7 +48,7 @@ export async function fetchAllTask(page) {
 
         if (result.status >= 200){
 
-            showAlert(result.status, "Tarefas encontradas")
+            showAlert(result.status, "Tarefas encontradas", false)
 
         }
 
@@ -66,7 +66,7 @@ export async function fetchAllTask(page) {
     }
 };
 
-export async function fetchEditTask() {
+export async function fetchEditTask(data) {
 
     try {
 
@@ -75,6 +75,7 @@ export async function fetchEditTask() {
             headers: {
                 "Content-Type": "application/json"
             },
+            body: JSON.stringify(data),
             credentials: "include"
         });
 
@@ -84,7 +85,7 @@ export async function fetchEditTask() {
 
         if (result.status >= 200){
 
-            showAlert(result.status, "Editação da tarefa feita com sucesso.")
+            showAlert(result.status, result.message)
 
         }
 

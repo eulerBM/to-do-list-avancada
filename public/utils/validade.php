@@ -94,29 +94,44 @@ class validade{
 
     public function requestTaskEdit($titulo, $descricao, $situation, $grupo, $dateLimit, $idTask, $idPublicUser){
 
+        if(empty($titulo) && empty($descricao) && empty($situation) && empty($dateLimit)){
+
+            throw new ValidationException("Por favor altere os campos.");
+        }
+
         // Validação titulo
-        if(strlen($titulo) > 200){
-            throw new ValidationException("O titulo deve ter no maximo 200 caracteres.");
+        if($titulo != null){
+            if(strlen($titulo) > 200){
+                throw new ValidationException("O titulo deve ter no maximo 200 caracteres.");
+            }
         }
 
         // Validação descrição
-        if(strlen($descricao) < 5 || strlen($descricao) > 1000){
-            throw new ValidationException("A descrição deve ter entre 5 ou 1000 caracteres.");
+        if($descricao != null){
+            if(strlen($descricao) < 5 || strlen($descricao) > 1000){
+                throw new ValidationException("A descrição deve ter entre 5 ou 1000 caracteres.");
+            }
         }
 
         // Validação situação
-        if(strlen($situation) > 10){
-            throw new ValidationException("A situação deve ter no maximo 10 caracteres.");
+        if($situation != null){
+            if(strlen($situation) > 10){
+                throw new ValidationException("A situação deve ter no maximo 10 caracteres.");
+            }
         }
 
         // Validação de grupo
-        if(strlen($grupo) > 1000){
-            throw new ValidationException("O grupo deve ter no maximo 1000 caracteres.");
+        if($grupo != null){
+            if(strlen($grupo) > 1000){
+                throw new ValidationException("O grupo deve ter no maximo 1000 caracteres.");
+            }
         }
 
         // Validação date limite
-        if(strlen($dateLimit) > 50){
-            throw new ValidationException("Data limite muito grande.");
+        if($dateLimit != null){
+            if(strlen($dateLimit) > 50){
+                throw new ValidationException("Data limite muito grande.");
+            }
         }
 
         // Validação ID da task

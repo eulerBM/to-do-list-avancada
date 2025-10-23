@@ -13,11 +13,11 @@ include 'includes/header.php';
     </div>
 
     <!-- Botão Criar Tarefa -->
-    <button type="button" class="btn btn-outline-secondary mb-4" data-bs-toggle="modal" data-bs-target="#modalTarefa">
+    <button type="button" class="btn btn-outline-secondary mb-4" onclick="createTask()">
         Criar tarefa
     </button>
 
-    <!-- 🔽 Seção de Tarefas -->
+    <!-- Seção de Tarefas -->
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-dark text-white">
             <h5 class="mb-0">Tarefas</h5>
@@ -47,224 +47,170 @@ include 'includes/header.php';
 
     </div>
 
-    <!-- Modal para excluir -->
-    <div class="modal fade" id="modalTarefaExcluir" tabindex="-1" aria-labelledby="modalTarefaLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <!-- MODAL EDITAR TASK VAI AQUI -->
+    <div id="modalEditTask">
 
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTarefaLabel">Excluir Tarefa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-
-                <div class="modal-body">
-
-                    <form id="formDeletTask">
-
-                        <div class="mb-3 text-center">
-                            <label for="titulo" class="form-label">Título: </label>
-                        </div>
-
-                        <div class="mb-3 text-center">
-                            <label for="titulo" class="form-label">Título</label>
-                            <input type="text" class="form-control form-control-sm" id="titulo" name="titulo" placeholder="Digite o título" required>
-                        </div>
-
-                        <div class="mb-3 text-center">
-                            <button type="submit" class="btn btn-primary">Excluir</button>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <!-- Modal editar tarefa -->
-    <div class="modal fade" id="modalTarefaEditar" tabindex="-1" aria-labelledby="modalTarefaLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <!-- MODAL EXCLUIR TASK VAI AQUI -->
+    <div id="modalDeleteTask">
 
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTarefaLabel">Editar Tarefa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-
-                <div class="modal-body">
-                    <form action="salvar_tarefa.php" method="POST">
-                        <div class="mb-3 text-center">
-                            <label for="titulo" class="form-label">Título</label>
-                            <input type="text" class="form-control form-control-sm" id="titulo" name="titulo" placeholder="Digite o título" required>
-                        </div>
-                        <div class="mb-3 text-center">
-                            <label for="descricao" class="form-label">Descrição</label>
-                            <textarea class="form-control form-control-sm" id="descricao" name="descricao" rows="3" placeholder="Descrição"></textarea>
-                        </div>
-                        <div class="mb-3 text-center">
-                            <label for="situacao" class="form-label">Situação</label>
-                            <select class="form-control form-control-sm" id="situacao" name="situacao" required>
-                                <option value="">Selecione...</option>
-                                <option value="pendente">Pendente</option>
-                                <option value="concluida">Concluída</option>
-                            </select>
-                        </div>
-                        <div class="mb-3 text-center">
-                            <label for="grupo" class="form-label">Grupo</label>
-                            <input type="text" class="form-control form-control-sm" id="grupo" name="grupo" placeholder="Digite o email de cada pessoa" required>
-                        </div>
-                        <div class="mb-3 text-center">
-                            <label for="dataHora" class="form-label">Data limite</label>
-                            <input type="datetime-local" class="form-control form-control-sm" id="dataHora" name="dataHora" required>
-                        </div>
-                        <div class="mb-3 text-center">
-                            <button type="submit" class="btn btn-primary">Criar</button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
     </div>
 
-    <!-- Modal criar tarefa -->
-    <div class="modal fade" id="modalTarefa" tabindex="-1" aria-labelledby="modalTarefaLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <!-- MODAL CREATE TASK VAI AQUI -->
+    <div id="modalCreateTask">
 
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTarefaLabel">Nova Tarefa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-
-                <div class="modal-body">
-                    <form id="formTaskCreator">
-                        <div class="mb-3 text-center">
-                            <label for="titulo" class="form-label">Título</label>
-                            <input type="text" class="form-control form-control-sm" id="titulo" name="titulo" placeholder="Digite o título" required>
-                        </div>
-                        <div class="mb-3 text-center">
-                            <label for="descricao" class="form-label">Descrição</label>
-                            <textarea class="form-control form-control-sm" id="descricao" name="descricao" rows="3" placeholder="Descrição"></textarea>
-                        </div>
-
-                        <div class="mb-3 text-center">
-                            <label for="grupo" class="form-label">Grupo</label>
-                            <input type="email" class="form-control form-control-sm" id="grupo" name="grupo[]" placeholder="Digite os e-mails dos usuários" multiple required>
-                            <small class="form-text text-muted">Separe os e-mails por vírgula.</small>
-                        </div>
-                        <div class="mb-3 text-center">
-                            <label for="dataHora" class="form-label">Data limite</label>
-                            <input type="datetime-local" class="form-control form-control-sm" id="dataHora" name="dateLimit" required>
-                        </div>
-                        <div class="mb-3 text-center">
-                            <button type="submit" class="btn btn-primary">Criar</button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
     </div>
+
 
 </div>
 
 <script type="module">
     import {
         fetchCreateTask,
-        fetchDeleteTask
+        fetchDeleteTask,
+        fetchEditTask
     } from "./js/api.js";
     import {
         renderTasks
     } from "./js/renderTasks.js";
+    import {
+        renderModalEdit
+    } from "./js/renderModalEdit.js";
+    import {
+        renderModalDelete
+    } from "./js/renderModalDelete.js";
+    import {
+        renderModalCreate
+    } from "./js/renderModalCreate.js";
 
-    let currentPage = 1;
+    renderTasks("task-list");
 
-    // dentro do módulo
-    window.deleteTask = function(nameTask, idTask) {
+    //Mudar a paginação
+    window.changePageTask = function(page) {
+        renderTasks("task-list", page)
 
-        const confirmDelete = confirm("Você tem certeza que quer excluir a tarefa: " + nameTask);
-        if (!confirmDelete) return;
+    }
 
-        return fetchDeleteTask(idTask);
-        
+    //Quando apertar criar task
+    window.createTask = function() {
+
+        renderModalCreate()
+
+        const modalElement = document.getElementById("modalTarefa");
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+
+        formTaskCreator.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(formTaskCreator);
+            const data = Object.fromEntries(formData.entries());
+
+            const taskData = {
+                titulo: data.titulo,
+                descricao: data.descricao,
+                grupo: data.grupo,
+                dateLimit: data.dateLimit
+            };
+
+            try {
+
+                await fetchCreateTask(taskData);
+                modal.hide();
+                modalElement.remove();
+                renderTasks("task-list");
+
+            } catch (err) {
+
+                console.error("Erro ao deletar tarefa:", err);
+
+            }
+        });
+
+
+        console.log("oi euler :D")
+
+    }
+
+    //Quando apertar Excluir
+    window.deleteTask = function(title, idTask) {
+
+        renderModalDelete(title, idTask);
+
+        const modalElement = document.getElementById("modalExcluir");
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+
+        //Deletar Tarefa
+        const formDelete = modalElement.querySelector("#formDeletTask");
+        formDelete.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+
+            try {
+
+                await fetchDeleteTask(idTask);
+                modal.hide();
+                modalElement.remove();
+                renderTasks("task-list");
+
+            } catch (err) {
+
+                console.error("Erro ao deletar tarefa:", err);
+
+            }
+        });
     };
 
-    document.addEventListener("DOMContentLoaded", () => {
+    //Quando apertar editar
+    window.editTask = function(title, description, situation, group, timeout, idTask) {
 
-        // ========================
-        // 🔹 Renderizar Tarefas (Página Atual)
-        // ========================
-        renderTasks("task-list", currentPage);
+        console.log(title, description, situation, group, timeout, idTask);
 
-        // ========================
-        // 📝 Criar Tarefa
-        // ========================
-        const formCreate = document.getElementById("formTaskCreator");
-        if (formCreate) {
-            formCreate.addEventListener("submit", async (e) => {
-                e.preventDefault();
 
-                const formData = new FormData(formCreate);
-                const data = Object.fromEntries(formData.entries());
+        renderModalEdit(title, description, status, group, timeout, idTask);
 
-                console.log("🟢 Enviando dados (criar):", data);
+        const modalElement = document.getElementById("modalTarefaEditar");
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
 
-                try {
-                    await fetchCreateTask(data);
-                    renderTasks("task-list", currentPage); // Recarrega tarefas
-                } catch (err) {
-                    console.error("Erro ao criar tarefa:", err);
-                }
-            });
-        }
+        const formEdit = document.getElementById("formTaskEdit");
 
-        // ========================
-        // 🗑️ Deletar Tarefa
-        // ========================
-        const formDelete = document.getElementById("formDeletTask");
-        if (formDelete) {
-            formDelete.addEventListener("submit", async (e) => {
-                e.preventDefault();
+        if (!formEdit) return;
 
-                const formData = new FormData(formDelete);
-                const data = Object.fromEntries(formData.entries());
+        // Remove listener antigo para não duplicar
+        formEdit.replaceWith(formEdit.cloneNode(true));
+        const newFormEdit = document.getElementById("formTaskEdit");
 
-                console.log("🔴 Enviando dados (deletar):", data);
+        newFormEdit.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-                try {
-                    await fetchCreateTask(data);
-                    renderTasks("task-list", currentPage); // Recarrega tarefas
-                } catch (err) {
-                    console.error("Erro ao deletar tarefa:", err);
-                }
-            });
-        }
+            const formData = new FormData(newFormEdit);
+            const data = Object.fromEntries(formData.entries());
 
-        // ========================
-        // 📄 Paginação (se quiser integrar aqui)
-        // ========================
-        const pagination = document.querySelector(".pagination");
-        if (pagination) {
-            pagination.addEventListener("click", (e) => {
-                e.preventDefault();
-                const target = e.target.closest(".page-link");
-                if (!target) return;
+            const taskData = {
+                titulo: data.titulo === title ? null : data.titulo,
+                descricao: data.descricao === description ? null : data.descricao,
+                situation: data.situation === situation ? null : data.situation,
+                grupo: data.grupo === group ? null : data.grupo,
+                dateLimit: data.dataHora === timeout ? null : data.dataHora,
+                idTask: idTask,
+            };
 
-                const label = target.getAttribute("aria-label");
-                const pageText = target.textContent.trim();
+            try {
 
-                if (!isNaN(pageText)) {
-                    currentPage = Number(pageText);
-                } else if (label === "Next") {
-                    currentPage++;
-                } else if (label === "Previous" && currentPage > 1) {
-                    currentPage--;
-                }
+                await fetchEditTask(taskData);
+                renderTasks("task-list");
+                modal.hide();
 
-                renderTasks("task-list", currentPage);
-            });
-        }
-    });
+            } catch (err) {
+
+                console.error("Erro ao editar tarefa:", err);
+
+            }
+        });
+    };
 </script>
 
 <?php include 'includes/footer.php'; ?>
