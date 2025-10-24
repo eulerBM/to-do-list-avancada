@@ -4,11 +4,11 @@
 
 <div class="container">
 
-  <form id="userForm" >
+  <form id="userForm">
 
     <div class="mb-3 text-center col-6 mx-auto">
       <label for="exampleFormControlInput1" class="form-label">Nome</label>
-      <input type="text" name="name" class="form-control form-control-sm" id="exampleFormControlInput1" placeholder="Digite seu nome completo">
+      <input type="text" name="name" class="form-control form-control-sm" id="exampleFormControlInput1" placeholder="Digite seu nome completo" require>
     </div>
 
     <div class="mb-3 text-center col-6 mx-auto">
@@ -32,57 +32,54 @@
 
     </div>
 
-
-
   </form>
 
 </div>
 
 <script type="module">
   import {
-    showAlert
-  } from "./js/alerts.js";
+    Validade
+  } from "../js/validade/user/register.js";
+  import {
+    ValidationException
+  } from '../js/exceptions/ValidationException.js';
+  import {
+    Request
+  } from '../js/requests/userRequest.js';
+  import AlertResponse from '../js/alerts/alertResponse.js';
+  import alertExceptions from '../js/alerts/alertExceptions.js';
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("userForm");
-
-    form.addEventListener("submit", async (e) => {
+  $(document).ready(function() {
+    $("#userForm").submit(async function(e) {
       e.preventDefault();
 
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
-
-      console.log("Enviando dados:", data);
+      const formData = $(this).serializeArray();
+      const data = {};
+      formData.forEach(item => data[item.name] = item.value);
 
       try {
+        const validade = new Validade();
+        validade.register(data.name, data.email, data.password, data.confirmPassword);
 
-        const response = await fetch("controller/createUserController.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        });
+        const request = new Request();
+        const response = await request.register(data);
 
-        const result = await response.json();
+        const alertResponse = new AlertResponse(response);
+        alertResponse.registerShow();
 
-        console.log("Resposta do servidor:", result);
+      } catch (error) {
+        if (error instanceof ValidationException) {
 
-        if (result.status >= 200) {
-
-          showAlert(result.status, result.messsage)
+          return;
 
         }
 
-      } catch (error) {
+        const alertException = new alertExceptions();
 
-        console.error("Erro ao enviar:", error);
-        alert("Erro ao enviar os dados");
+        alertException.unknownError(error.message)
 
       }
-
     });
-
   });
 </script>
 

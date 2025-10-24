@@ -17,50 +17,49 @@ include 'includes/header.php';
         Criar tarefa
     </button>
 
-    <!-- Seção de Tarefas -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-dark text-white">
-            <h5 class="mb-0">Tarefas</h5>
+    <!-- Botão Criar Tarefa -->
+    <button type="button" class="btn btn-outline-secondary mb-4" onclick="filterTask()">
+        Filtros
+    </button>
+
+    <!-- Colunas Pendentes / Concluídas -->
+    <div class="task-columns d-flex gap-3">
+
+        <!-- Pendentes -->
+        <div class="task-column flex-fill">
+            <h5 class="column-title">Pendentes</h5>
+            <ul id="pending-tasks" class="list-group list-group-flush mb-3">
+                <li class="list-group-item text-muted text-center">📋 Nenhuma tarefa pendente.</li>
+            </ul>
         </div>
 
-        <ul id="task-list" class="list-group list-group-flush">
+        <!-- Concluídas -->
+        <div class="task-column flex-fill">
+            <h5 class="column-title">Concluídas</h5>
+            <ul id="completed-tasks" class="list-group list-group-flush mb-3">
+                <li class="list-group-item text-muted text-center">✅ Nenhuma tarefa concluída.</li>
+            </ul>
+        </div>
 
-            <li class="list-group-item">
+    </div>
 
-                <!-- TAREFAS VAO AQUI -->
+    <!-- BOTÃO DE PAGINAÇÃO -->
+    <nav aria-label="Page navigation example" class="d-flex justify-content-center">
 
+        <ul class="pagination" id="list-total-pages">
+
+            <!-- BOTAO PAGINAÇÃO VAI AQUI -->
 
             </li>
-            <li class="list-group-item text-muted text-center">📋 Nenhuma tarefa encontrada.</li>
         </ul>
+    </nav>
 
-        <!-- BOTÃO DE PAGINAÇÃO -->
-        <nav aria-label="Page navigation example" class="d-flex justify-content-center">
 
-            <ul class="pagination" id="list-total-pages">
-
-                <!-- BOTAO PAGINAÇÃO VAI AQUI -->
-
-                </li>
-            </ul>
-        </nav>
-
-    </div>
-
-    <!-- MODAL EDITAR TASK VAI AQUI -->
-    <div id="modalEditTask">
-
-    </div>
-
-    <!-- MODAL EXCLUIR TASK VAI AQUI -->
-    <div id="modalDeleteTask">
-
-    </div>
-
-    <!-- MODAL CREATE TASK VAI AQUI -->
-    <div id="modalCreateTask">
-
-    </div>
+    <!-- MODALS -->
+    <div id="modalEditTask"></div>
+    <div id="modalDeleteTask"></div>
+    <div id="modalCreateTask"></div>
+    <div id="modalFiltrosTask"></div>
 
 
 </div>
@@ -72,7 +71,7 @@ include 'includes/header.php';
         fetchEditTask
     } from "./js/api.js";
     import {
-        renderTasks
+        renderTasks, renderTasksFilter
     } from "./js/renderTasks.js";
     import {
         renderModalEdit
@@ -83,6 +82,10 @@ include 'includes/header.php';
     import {
         renderModalCreate
     } from "./js/renderModalCreate.js";
+    import {
+        renderModalFilter
+    } from "./js/renderModalFilter.js";
+
 
     renderTasks("task-list");
 
@@ -92,6 +95,48 @@ include 'includes/header.php';
 
     }
 
+    //Quando apertar filtros 
+    window.filterTask = function() {
+
+        renderModalFilter()
+
+        const modalElement = document.getElementById("modalFilter");
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+
+        formTaskCreator.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            console.log("to chamando a função filter")
+
+            const formData = new FormData(formTaskCreator);
+            const data = Object.fromEntries(formData.entries());
+
+            const taskData = {
+                title: data.title,
+                description: data.description,
+                situation: data.situation,
+                order: data.order,
+                group: data.group,
+                dateStart: data.dateStart,
+                endDate: data.endDate
+            };
+
+            console.log("dados filter enviados :", data)
+
+            try {
+
+                renderTasksFilter(taskData);
+                modal.hide();
+                modalElement.remove();
+
+            } catch (err) {
+
+                console.error("Erro ao filtra tarefa:", err);
+
+            }
+        });
+    }
     //Quando apertar criar task
     window.createTask = function() {
 
@@ -127,10 +172,6 @@ include 'includes/header.php';
 
             }
         });
-
-
-        console.log("oi euler :D")
-
     }
 
     //Quando apertar Excluir

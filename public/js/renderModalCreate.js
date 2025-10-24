@@ -1,5 +1,5 @@
 
-export async function renderModalCreate(title, description, status, group, timeout, idTask) {
+export async function renderModalCreate() {
    
     const itemHTML = `
         <!-- Modal criar tarefa -->
@@ -26,7 +26,7 @@ export async function renderModalCreate(title, description, status, group, timeo
                         <div class="mb-3 text-center">
                             <label for="grupo" class="form-label">Grupo</label>
                             <input type="email" class="form-control form-control-sm" id="grupo" name="grupo[]" placeholder="Digite os e-mails dos usuários" multiple>
-                            <small class="form-text text-muted">Separe os e-mails por vírgula.</small>
+                            <small id="text-help"class="form-text text-muted">Separe os e-mails por vírgula.</small>
                         </div>
                         <div class="mb-3 text-center">
                             <label for="dataHora" class="form-label">Data limite</label>
@@ -51,7 +51,6 @@ export async function renderModalCreate(title, description, status, group, timeo
 
   const modalElement = document.getElementById("modalCreateTask");
   
- 
   modalElement.addEventListener("hidden.bs.modal", () => {
     modalElement.remove();
     console.log("Modal removido do DOM ✅");

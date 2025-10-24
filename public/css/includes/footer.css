@@ -1,16 +1,57 @@
 html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
-      height: 100%; 
-    }
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #0b0b0b; /* Mantém o fundo consistente */
+    font-family: 'Crimson Text', serif;
+    color: #fff;
+}
 
-    body {
+main {
+    flex: 1;
+    padding: 1rem;
+}
 
-      display: flex;
-      flex-direction: column;
-    }
+/* Footer estilizado */
+footer {
+    background: linear-gradient(90deg, #0b0b0b 0%, #1a0000 100%);
+    color: #ccc;
+    font-family: 'Crimson Text', serif;
+    font-size: 0.95rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.5);
+    border-top: 1px solid #660000;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
 
-    main {
+footer a {
+    color: #ff4d4d;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
 
-      flex: 1;
-      
-    }
+footer a:hover {
+    color: #ff1a1a;
+    text-shadow: 0 0 6px rgba(255, 77, 77, 0.7);
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Padding consistente */
+footer.py-3 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* Pequeno efeito de hover para o footer */
+footer:hover {
+    box-shadow: 0 -4px 14px rgba(255, 0, 0, 0.4);
+}

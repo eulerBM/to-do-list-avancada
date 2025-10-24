@@ -1,82 +1,86 @@
 <?php include 'includes/header.php'; ?>
 
 <link rel="stylesheet" href="../css/login.css">
+<link rel="stylesheet" href="../css/alert.css">
+
 
 <div class="container">
 
-    <form id="userForm">
+  <form id="userForm">
 
-        <div class="mb-3 text-center col-6 mx-auto">
+    <div class="mb-3 text-center col-6 mx-auto">
 
-          <label for="exampleFormControlInput1" class="form-label">Email</label>
-          <input name="email" class="form-control form-control-sm" id="exampleFormControlInput1" placeholder="Exemplo@email.com" require>
+      <label for="exampleFormControlInput1" class="form-label">Email</label>
+      <input name="email" class="form-control form-control-sm" id="exampleFormControlInput1" placeholder="Exemplo@email.com" require>
 
-        </div>
-        
-        <div class="mb-3 text-center col-6 mx-auto">
+    </div>
 
-          <label for="inputPassword1" class="form-label">Senha</label>
-          <input type="password" name="password" id="inputPassword1" class="form-control form-control-sm" aria-describedby="passwordHelpBlock" placeholder="Digite sua senha" require>
+    <div class="mb-3 text-center col-6 mx-auto">
 
-        </div>
+      <label for="inputPassword1" class="form-label">Senha</label>
+      <input type="password" name="password" id="inputPassword1" class="form-control form-control-sm" aria-describedby="passwordHelpBlock" placeholder="Digite sua senha" require>
 
-        <div class="mb-3 text-center col-6 mx-auto">
+    </div>
 
-          <button type="submit" class="btn btn-danger">Entrar</button>
+    <div class="mb-3 text-center col-6 mx-auto">
 
-        </div>
-        
-    </form>
+      <button type="submit" class="btn btn-danger">Entrar</button>
+
+    </div>
+
+    <div id="alert-message"></div>
+
+  </form>
 
 </div>
 
-<script type="module"> 
 
-    import { showAlert } from "./js/alerts.js";
-    import { redirectAfterSuccess } from "./js/script.js";
+<script type="module">
 
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("userForm");
+  import {
+    Validade
+  } from "../js/validade/user/login.js";
+  import {
+    ValidationException
+  } from '../js/exceptions/ValidationException.js';
+  import alertExceptions from '../js/alerts/alertExceptions.js';
+  import {
+    Request
+  } from '../js/requests/userRequest.js';
+  import AlertResponse from '../js/alerts/alertResponse.js';
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  $(function() {
+    $("#userForm").submit(async function(e) {
+      e.preventDefault();
 
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+      const formData = $(this).serializeArray();
+      const data = {};
+      formData.forEach(item => data[item.name] = item.value);
 
-    console.log("Enviando dados:", data);
+      try {
 
-    try {
-        
-      const response = await fetch("controller/loginUserController.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
+        const validade = new Validade();
+        validade.login(data.email, data.password);
 
-      const result = await response.json();
+        const request = new Request();
+        const response = await request.login(data);
 
-      console.log("Resposta do servidor:", result);
+        const alertResponse = new AlertResponse(response);
+        alertResponse.loginShow();
 
-      if(result.status >= 200){
+      } catch (error) {
 
-        showAlert(result.status, result.message)
+        if (error instanceof ValidationException) {
+          return;
+        }
 
-        redirectAfterSuccess(result)
-        
+        const alertException = new alertExceptions();
+
+        alertException.unknownError(error.message)
+
       }
-
-    } catch (error) {
-
-      console.error("Erro ao enviar:", error);
-      alert("Erro ao enviar os dados");
-
-    }
-
+    });
   });
-
-});
-
 </script>
 
 <?php include 'includes/footer.php'; ?>

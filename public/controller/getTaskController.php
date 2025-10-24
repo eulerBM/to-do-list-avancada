@@ -4,7 +4,6 @@ require_once '../services/taskService.php';
 require_once '../response/response.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
-
     $taskService = new TaskService();
 
     $page = $_GET['page'] ?? 1;   // valor padrão 1

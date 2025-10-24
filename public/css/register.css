@@ -1,11 +1,7 @@
-.form-label {
-    color: #ffffff;
-    margin-left: 0%;
-
-}
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap');
 
 #userForm{
-    margin-top: 1%;
+    margin-top: 9%;
     margin-left: 10%;
     background-color: #1c1c1c;
     padding: 3rem;
@@ -14,5 +10,45 @@
     width: 100%;
     max-width: 80%;
 
+}
+
+#userForm .form-label {
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px #660000;
+}
+
+#userForm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+}
+
+#userForm {
+    background-color: #1a1a1a;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+    border: 1px solid #660000;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#userForm button.btn {
+    background-color: #660000;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 6px;
+    width: 100%;
+    padding: 0.6rem;
+    border: none;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+#userForm button.btn:hover {
+  background-color: #ff0000c5;
+  transform: scale(1.05); /* aumenta 5% */
+  color: white;
 }
 

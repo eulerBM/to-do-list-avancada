@@ -100,6 +100,36 @@ class taskService{
 
     }
 
+    public function filterTask($title, $description, $situation, $order, $group, $dateStart, $endDate, $userCreatorId){
+
+        try{
+
+            $this->validade->requestTaskFilter($title, $description, $situation, $order, $group, $dateStart, $endDate, $userCreatorId);
+
+            $tasks = $this->taskRepository->filterTask($title, $description, $situation, $order, $group, $dateStart, $endDate, $userCreatorId);
+
+            error_log("Tasks: " . print_r($tasks, true));
+
+            if($tasks['isOk'] === false){
+
+                $this->response->error(400, "Erro ao buscar as tarefas filtradas.");
+
+            }
+
+            $this->response->getAllTasks(200, $tasks['data'], $tasks['totalPages']);
+
+        } catch (ValidationException $e){
+
+            $this->response->error($e->getStatus(), $e->getMessage());
+
+        } catch (Exception $e){
+
+            $this->response->error(500, "Erro interno: " . $e->getMessage());
+            
+        }
+
+    }
+
     public function delete($idTask, $idPublicUser){
 
         try{

@@ -1,6 +1,6 @@
 import { showAlert } from "./alerts.js";
 
-export async function  fetchCreateTask(data) {
+export async function fetchCreateTask(data) {
 
     try {
 
@@ -16,11 +16,57 @@ export async function  fetchCreateTask(data) {
 
         console.log("Resposta do servidor:", result);
 
-        if (result.status > 200){
+        if (result.status > 200) {
 
             showAlert(result.status, result.message)
 
         }
+
+    } catch (error) {
+
+        console.error("Erro ao enviar:", error);
+        alert("Erro ao enviar os dados");
+
+    }
+};
+
+export async function fetchTaskfilter(filter, page = 1) {
+
+    try {
+
+        console.log("Dados enviados: " + filter)
+
+        const queryParams = new URLSearchParams({
+            page,
+            ...filter
+        }).toString();
+
+
+        const response = await fetch(`controller/filterTaskController.php?page=${queryParams}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+        });
+
+        const result = await response.json();
+
+        console.log("Resposta do servidor:", result);
+
+        if (result.status >= 200) {
+
+            showAlert(result.status, result.message)
+
+        }
+
+        localStorage.clear()
+
+        if (!localStorage.getItem("totalPages")) {
+            localStorage.setItem("totalPages", result.totalPages)
+        }
+
+        return result;
 
     } catch (error) {
 
@@ -46,16 +92,18 @@ export async function fetchAllTask(page) {
 
         console.log("Resposta do servidor:", result);
 
-        if (result.status >= 200){
+        if (result.status >= 200) {
 
             showAlert(result.status, "Tarefas encontradas", false)
 
         }
 
-        if(!localStorage.getItem("totalPages")){
+        localStorage.clear()
+
+        if (!localStorage.getItem("totalPages")) {
             localStorage.setItem("totalPages", result.totalPages)
         }
-        
+
         return result;
 
     } catch (error) {
@@ -83,7 +131,7 @@ export async function fetchEditTask(data) {
 
         console.log("Resposta do servidor:", result);
 
-        if (result.status >= 200){
+        if (result.status >= 200) {
 
             showAlert(result.status, result.message)
 
@@ -116,7 +164,7 @@ export async function fetchDeleteTask(idTask) {
 
         console.log("Resposta do servidor:", result);
 
-        if (result.status >= 200){
+        if (result.status >= 200) {
 
             showAlert(result.status, result.message)
 

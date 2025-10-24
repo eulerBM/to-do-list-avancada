@@ -1,33 +1,80 @@
+/* Navbar Customizada */
 .navbar-custom {
-      background: linear-gradient(90deg, #0c0c0c 0%, #1a0000 100%);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    }
+    background: linear-gradient(90deg, #0b0b0b 0%, #1a0000 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    padding: 0.8rem 1rem;
+    font-family: 'Crimson Text', serif;
+}
 
+/* Marca do site */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 3px rgba(255, 0, 0, 0.6);
+    transition: transform 0.2s ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.navbar-brand span.red {
+    color: #ff4d4d;
+    text-shadow: 1px 1px 2px #660000;
+}
+
+/* Links da navbar */
+.nav-link {
+    color: #ccc !important;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.nav-link:hover {
+    color: #ff4d4d !important;
+    text-shadow: 0 0 5px rgba(255, 77, 77, 0.7);
+}
+
+/* Botão de acesso (sair / login / cadastrar) */
+.btn-acesso,
+.btn-outline-danger {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 0.35rem 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.btn-acesso {
+    background-color: #d40000;
+    color: #fff;
+    border: none;
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+}
+
+.btn-acesso:hover {
+    background-color: #ff4d4d;
+    box-shadow: 0 0 12px rgba(255, 77, 77, 0.7);
+}
+
+.btn-outline-danger {
+    color: #ff4d4d;
+    border-color: #ff4d4d;
+    box-shadow: 0 0 6px rgba(255, 77, 77, 0.5);
+}
+
+.btn-outline-danger:hover {
+    background-color: #ff4d4d;
+    color: #fff;
+    border-color: #ff1a1a;
+    box-shadow: 0 0 12px rgba(255, 77, 77, 0.7);
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
     .navbar-brand {
-      font-weight: 600;
-      font-size: 1.3rem;
-    }
-
-    .navbar-brand span.red {
-      color: #ff1a1a;
+        font-size: 1.3rem;
     }
 
     .nav-link {
-      color: #ccc !important;
-      transition: color 0.2s;
+        margin: 0.3rem 0;
     }
-
-    .nav-link:hover {
-      color: #fff !important;
-    }
-
-    .btn-acesso {
-      background-color: #d40000;
-      color: #fff;
-      border: none;
-      transition: 0.2s;
-    }
-
-    .btn-acesso:hover {
-      background-color: #ff1a1a;
-    }
+}

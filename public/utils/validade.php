@@ -150,6 +150,75 @@ class validade{
 
     }
 
+     public function requestTaskFilter($title, $description, $situation, $order, $group, $dateStart, $endDate, $userCreatorId){
+
+
+        if(empty($title) && empty($description) && empty($situation) && empty($order) && empty($dateStart) && empty($endDate) ){
+
+            throw new ValidationException("Por favor escolha os filtros.");
+        }
+
+        // Validação titulo
+        if(!empty($title)){
+            if(strlen($title) < 5 || strlen($title) > 200 ){
+                throw new ValidationException("O titulo deve ter entre 5 ou 200 caracteres.");
+            }
+            
+        }
+
+        // Validação descrição
+        if(!empty($description)){
+            if(strlen($description) < 5 || strlen($description) > 1000){
+                throw new ValidationException("A descrição deve ter entre 5 ou 1000 caracteres.");
+            }
+        }
+
+        // Validação situação
+        if($situation != null){
+            if(strlen($situation) > 1){
+                throw new ValidationException("A situação deve ter no maximo 1 caractere.");
+            }
+        }
+
+        // Validação order
+        if(!empty($order)){
+            if($order !== "asc" && $order !== "desc"){
+                throw new ValidationException("O ordenar por deve ser asc ou desc.");
+            }
+        }
+
+        // Validação de grupo
+        if($group != null){
+            if(strlen($group) > 1000){
+                throw new ValidationException("O grupo deve ter no maximo 1000 caracteres.");
+            }
+        }
+
+        // Validação date limite
+        if($dateStart != null){
+            if(strlen($dateStart) > 50){
+                throw new ValidationException("Data limite muito grande.");
+            }
+        }
+
+        // Validação date final
+        if($endDate != null){
+            if(strlen($dateStart) > 50){
+                throw new ValidationException("Data final muito grande.");
+            }
+        }
+
+        // Validação id user criador
+        if(empty($userCreatorId)){
+            throw new ValidationException("O id do usuario criador deve estar presente.");
+        }
+        if(strlen($userCreatorId) > 50){
+            throw new ValidationException("ID do usuario criador muito grande.");
+        }
+
+
+    }
+
     public function requestTaskDelete($idTask, $userCreatorId){
 
         // Validação ID da task
