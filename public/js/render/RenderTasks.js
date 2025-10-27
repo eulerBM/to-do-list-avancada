@@ -40,8 +40,6 @@ export default class RenderTasks {
                 this.#htmlPaginationButton(response.totalPages, page);
                 this.#htmlTaskRendering(response)
 
-
-
             } else {
 
                 response = await request.getTasksWithPagination(page);
@@ -50,13 +48,11 @@ export default class RenderTasks {
                 this.#htmlTaskRendering(response)
             }
 
-            console.log(response)
-
         } catch(error){
 
             if (error instanceof ValidationException) {
-                    return;
-                }
+                return;
+            }
 
             console.error("Erro ao filtrar tarefa:", error);
 
@@ -97,7 +93,6 @@ export default class RenderTasks {
 
             const buttonContainer = document.createElement("strong");
 
-            // Botão Editar 
             const editButton = document.createElement("button");
             editButton.type = "button";
             editButton.className = "btn btn-outline-secondary me-2";
@@ -113,7 +108,6 @@ export default class RenderTasks {
                 );
             });
 
-            // Botão Excluir 
             const deleteButton = document.createElement("button");
             deleteButton.type = "button";
             deleteButton.className = "btn btn-outline-secondary";

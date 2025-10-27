@@ -4,9 +4,7 @@ if (!isset($_SESSION['user'])) {
     header("Location: /login");
     exit;
 }
-include 'includes/header.php';
-
-?>
+include 'includes/header.php'; ?>
 
 <link rel="stylesheet" href="../css/dashboard.css">
 
@@ -16,20 +14,16 @@ include 'includes/header.php';
 
     </div>
 
-    <!-- Botão Criar Tarefa -->
     <button type="button" class="btn btn-outline-secondary mb-4" onclick="createTask()">
         Criar tarefa
     </button>
 
-    <!-- Botão Criar Tarefa -->
     <button type="button" class="btn btn-outline-secondary mb-4" onclick="filterTask()">
         Filtros
     </button>
 
-    <!-- Colunas Pendentes / Concluídas -->
     <div class="task-columns d-flex gap-3">
 
-        <!-- Pendentes -->
         <div class="task-column flex-fill">
             <h5 class="column-title">Pendentes</h5>
             <ul id="pending-tasks" class="list-group list-group-flush mb-3">
@@ -37,7 +31,6 @@ include 'includes/header.php';
             </ul>
         </div>
 
-        <!-- Concluídas -->
         <div class="task-column flex-fill">
             <h5 class="column-title">Concluídas</h5>
             <ul id="completed-tasks" class="list-group list-group-flush mb-3">
@@ -47,14 +40,10 @@ include 'includes/header.php';
 
     </div>
 
-    <!-- BOTÃO DE PAGINAÇÃO -->
     <nav aria-label="Page navigation example" class="d-flex justify-content-center">
 
         <ul class="pagination" id="list-total-pages">
 
-            <!-- BOTAO PAGINAÇÃO VAI AQUI -->
-
-            </li>
         </ul>
     </nav>
 
@@ -91,10 +80,6 @@ include 'includes/header.php';
 
     //Paginação
     window.changePageTask = (page) => renderTasks.renderTasksWithPagination(page); 
-
-    
-
-    
 
 </script>
 

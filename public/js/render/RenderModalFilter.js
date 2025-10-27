@@ -104,8 +104,8 @@ export default class RenderModalFilter {
                             <label for="situacao" class="form-label">Situação</label>
                             <select class="form-control form-control-sm" id="situation" name="situation">
                                 <option value="" selected>selecione</option>
-                                <option value="0">pendente</option>
-                                <option value="1">concluída</option>
+                                <option value="pendente">pendente</option>
+                                <option value="concluida">concluída</option>
                             </select>
                         </div>
                         <div class="mb-3 text-center">

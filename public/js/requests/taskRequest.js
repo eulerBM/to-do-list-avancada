@@ -1,10 +1,10 @@
 export default class Request {
-
     urlGetTaskWithPagination = "controller/getTaskController.php";
     urlCreateTask = "controller/createTaskController.php";
     urlDeleteTask = "controller/deleteTaskController.php";
     urlEditTask = "controller/editTaskController.php";
     urlFilterTask = "controller/filterTaskController.php";
+    messageDefault = "Erro ao tentar se conectar com o servidor.";
 
 
     async getTasksWithPagination(page = 1){
@@ -23,7 +23,7 @@ export default class Request {
 
         } catch (error) {
 
-            throw new Error("Erro ao tentar se conectar com o servidor.");
+            throw new Error(this.messageDefault);
 
         }
     }
@@ -36,14 +36,15 @@ export default class Request {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
+                credentials: "include"
             });
 
             return await response.json();
 
         } catch (error) {
 
-            throw new Error("Erro ao tentar se conectar com o servidor.");
+            throw new Error(this.messageDefault);
 
         }
 
@@ -65,7 +66,7 @@ export default class Request {
 
         } catch (error) {
 
-            throw new Error("Erro ao tentar se conectar com o servidor.");
+            throw new Error(this.messageDefault);
 
         }
     }
@@ -91,7 +92,7 @@ export default class Request {
 
         } catch (error) {
 
-            throw new Error("Erro ao tentar se conectar com o servidor.");
+            throw new Error(this.messageDefault);
 
         }
 
@@ -114,7 +115,7 @@ export default class Request {
 
         } catch (error) {
 
-            throw new Error("Erro ao tentar se conectar com o servidor.");
+            throw new Error(this.messageDefault);
 
         }
     }

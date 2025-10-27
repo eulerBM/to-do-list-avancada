@@ -52,21 +52,21 @@ class validade{
         }
     }
 
-    public function requestTaskRegister($titulo, $descricao, $dateLimit, $userCreatorId){
+    public function requestTaskRegister($title, $description, $dateLimit, $userCreatorId){
 
         // Validação titulo
-        if(empty($titulo) || strlen($titulo) < 5){
+        if(empty($title) || strlen($title) < 5){
             throw new ValidationException("O titulo deve ter no minimo 5 caracteres.");
         }
-        if(strlen($titulo) > 200){
+        if(strlen($title) > 200){
             throw new ValidationException("O titulo deve ter no maximo 200 caracteres.");
         }
 
         // Validação descrição
-        if(empty($descricao) || strlen($descricao) < 5){
+        if(empty($description) || strlen($description) < 5){
             throw new ValidationException("A descrição deve ter pelo menos 5 caracteres.");
         }
-        if(strlen($descricao) > 1000){
+        if(strlen($description) > 1000){
             throw new ValidationException("A descrição deve ter no maximo 1000 caracteres.");
         }
 
@@ -87,23 +87,23 @@ class validade{
         }
     }
 
-    public function requestTaskEdit($titulo, $descricao, $situation, $dateLimit, $idTask, $idPublicUser){
+    public function requestTaskEdit($title, $description, $situation, $dateLimit, $idTask, $idPublicUser){
 
-        if(empty($titulo) && empty($descricao) && empty($situation) && empty($dateLimit)){
+        if(empty($title) && empty($description) && empty($situation) && empty($dateLimit)){
 
             throw new ValidationException("Por favor altere os campos.");
         }
 
         // Validação titulo
-        if(!empty($titulo )){
-            if(strlen($titulo) > 200){
+        if(!empty($title )){
+            if(strlen($title) > 200){
                 throw new ValidationException("O titulo deve ter no maximo 200 caracteres.");
             }
         }
 
         // Validação descrição
-        if(!empty($descricao)){
-            if(strlen($descricao) < 5 || strlen($descricao) > 1000){
+        if(!empty($description)){
+            if(strlen($description) < 5 || strlen($description) > 1000){
                 throw new ValidationException("A descrição deve ter entre 5 ou 1000 caracteres.");
             }
         }
@@ -155,8 +155,8 @@ class validade{
         }
 
         // Validação situação
-        if(!empty($situation) && strlen($situation) > 1){
-            throw new ValidationException("A situação deve ter no maximo 1 caractere.");        
+        if(!empty($situation) && strlen($situation) > 9){
+            throw new ValidationException("A situação deve ter no maximo 9 caractere.");        
         }
 
         // Validação order

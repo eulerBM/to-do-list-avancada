@@ -1,4 +1,4 @@
-/* Navbar Customizada */
+
 .navbar-custom {
     background: linear-gradient(90deg, #0b0b0b 0%, #1a0000 100%);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
@@ -6,7 +6,6 @@
     font-family: 'Crimson Text', serif;
 }
 
-/* Marca do site */
 .navbar-brand {
     font-weight: 700;
     font-size: 1.5rem;
@@ -23,7 +22,6 @@
     text-shadow: 1px 1px 2px #660000;
 }
 
-/* Links da navbar */
 .nav-link {
     color: #ccc !important;
     transition: color 0.3s, text-shadow 0.3s;
@@ -34,7 +32,6 @@
     text-shadow: 0 0 5px rgba(255, 77, 77, 0.7);
 }
 
-/* Botão de acesso (sair / login / cadastrar) */
 .btn-acesso,
 .btn-outline-danger {
     border-radius: 6px;
@@ -68,7 +65,6 @@
     box-shadow: 0 0 12px rgba(255, 77, 77, 0.7);
 }
 
-/* Ajustes responsivos */
 @media (max-width: 768px) {
     .navbar-brand {
         font-size: 1.3rem;

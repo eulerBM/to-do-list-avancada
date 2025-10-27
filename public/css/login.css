@@ -9,7 +9,6 @@
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
     width: 100%;
     max-width: 80%;
-
 }
 
 #userForm .form-label {
@@ -48,7 +47,7 @@
 
 #userForm button.btn:hover {
   background-color: #ff0000c5;
-  transform: scale(1.05); /* aumenta 5% */
+  transform: scale(1.05);
   color: white;
 }
 

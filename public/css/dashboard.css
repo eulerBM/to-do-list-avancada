@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Smooch+Sans:wght@100..900&display=swap');
-/* Container principal */
+
 #divMain {
   margin: 1% auto;
   padding: 2rem;
@@ -11,7 +11,6 @@
   font-family: 'Crimson Text', serif;
 }
 
-/* Colunas de tarefas */
 .task-columns {
   display: flex;
   gap: 1rem;
@@ -24,7 +23,6 @@
   padding: 1rem;
 }
 
-/* Título das colunas */
 .column-title {
   color: #ff4d4d;
   text-align: center;
@@ -34,7 +32,6 @@
 
 }
 
-/* Lista de tarefas */
 .list-group-item {
   background-color: #2a2a2a;
   border-bottom: 1px solid #660000;
@@ -51,7 +48,6 @@
   color: #888 !important;
 }
 
-/* Paginação */
 .pagination {
   display: flex;
   justify-content: center;
@@ -93,15 +89,11 @@
   cursor: not-allowed;
 }
 
-/* MODAL GERAL */
 .modal-content {
   background-color: #2c2c2c;
-  /* fundo escuro */
   color: #fff;
-  /* texto branco */
   border-radius: 8px;
   border: 1px solid #660000;
-  /* borda vermelha sutil */
   box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
   font-family: 'Crimson Text', serif;
 }
@@ -114,44 +106,39 @@
 }
 
 .modal-content {
-  background: rgba(31, 31, 31, 0.37); /* cor escura transparente */
-  backdrop-filter: blur(10px);       /* aplica o blur */
+  background: rgba(31, 31, 31, 0.37);
+  backdrop-filter: blur(10px); 
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
 .modal-backdrop.show {
-  backdrop-filter: blur(10px); /* desfoca o fundo */
-  background-color: rgba(0, 0, 0, 0.5); /* fundo semi-transparente */
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.5); 
 }
 
 .modal-header .btn-close {
   filter: invert(1);
-  /* botão branco */
 }
 
-/* BODY DO MODAL */
 .modal-body {
   padding: 1.5rem;
 }
 
-/* LABELS */
 .modal-body .form-label {
   color: #ddd;
   font-weight: 500;
 }
 
-/* Texto de ajuda (<small>) */
 .modal-body .form-text {
     display: block;
     text-align: center;
     margin-top: 0.25rem;
-    color: #bbb !important;       /* cinza claro para contraste */
+    color: #bbb !important;       
     font-size: 0.85rem;
     font-weight: 400;
 }
 
-/* INPUTS E TEXTAREA */
 .modal-body .form-control {
   background-color: #3a3a3a;
   color: #fff;
@@ -171,7 +158,6 @@
   color: #fff;
 }
 
-/* SELECT */
 .modal-body select.form-control {
   background-color: #3a3a3a;
   color: #fff;
@@ -179,7 +165,6 @@
   border-radius: 5px;
 }
 
-/* BOTÕES */
 .modal-body .btn-primary {
   background-color: #660000;
   border: 1px solid #ff4d4d;
@@ -194,7 +179,6 @@
   color: #1c1c1c;
 }
 
-/* ESPAÇAMENTO ENTRE CAMPOS */
 .modal-body .mb-3 {
   margin-bottom: 1rem;
 }
@@ -205,7 +189,6 @@
     border-color: #ffffff8a;
 }
 
-/* RESPONSIVO */
 @media (max-width: 576px) {
   .modal-dialog {
     max-width: 95%;

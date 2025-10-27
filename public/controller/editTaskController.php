@@ -8,14 +8,14 @@ if ($_SERVER["REQUEST_METHOD"] === "PATCH") {
 
     $data = json_decode(file_get_contents("php://input"), true);
     
-    $titulo = trim($data["titulo"]) ?? null;
-    $descricao = trim($data["descricao"]) ?? null;
+    $title = trim($data["title"]) ?? null;
+    $description = trim($data["description"]) ?? null;
     $situation = trim($data["situation"]) ?? null;
     $dateLimit = trim($data["dateLimit"]) ?? null;
     $idTask = trim($data["idTask"]) ?? null;
     $idPublicUser = $_SESSION['user']['idPublic'] ?? null;
     
-    $taskService->edit($titulo, $descricao, $situation, $dateLimit, $idTask, $idPublicUser);
+    $taskService->edit($title, $description, $situation, $dateLimit, $idTask, $idPublicUser);
 
 } else {
 

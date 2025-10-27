@@ -26,14 +26,14 @@ export default class RenderModalCreate {
 
 
             const taskData = {
-                titulo: data.titulo,
-                descricao: data.descricao,
+                title: data.title,
+                description: data.description,
                 dateLimit: data.dateLimit
             };
 
             try {
 
-                validade.create(data.titulo, data.descricao, data.dateLimit)
+                validade.create(data.title, data.description, data.dateLimit)
 
                 const response = await request.create(taskData);
                 modal.hide();
@@ -74,12 +74,12 @@ export default class RenderModalCreate {
                 <div class="modal-body">
                     <form id="formTaskCreator">
                         <div class="mb-3 text-center">
-                            <label for="titulo" class="form-label">Título</label>
-                            <input type="text" class="form-control form-control-sm" id="titulo" name="titulo" placeholder="Digite o título" required>
+                            <label for="title" class="form-label">Título</label>
+                            <input type="text" class="form-control form-control-sm" id="title" name="title" placeholder="Digite o título" required>
                         </div>
                         <div class="mb-3 text-center">
-                            <label for="descricao" class="form-label">Descrição</label>
-                            <textarea class="form-control form-control-sm" id="descricao" name="descricao" rows="3" placeholder="Descrição"></textarea>
+                            <label for="description" class="form-label">Descrição</label>
+                            <textarea class="form-control form-control-sm" id="description" name="description" rows="3" placeholder="Descrição"></textarea>
                         </div>
                         <div class="mb-3 text-center">
                             <label for="dataHora" class="form-label">Data limite</label>

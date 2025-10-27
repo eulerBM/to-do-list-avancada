@@ -9,7 +9,6 @@ export default class Validade {
             throw new ValidationException("Pelo menos um campo deve ser preenchido.");
         }
 
-        // Título
         if (!title || title.length < 5) {
             throw new ValidationException("O título deve ter no mínimo 5 caracteres.");
         }
@@ -17,7 +16,6 @@ export default class Validade {
             throw new ValidationException("O título deve ter no máximo 200 caracteres.");
         }
 
-        // Descrição
         if (!description || description.length < 5) {
             throw new ValidationException("A descrição deve ter no mínimo 5 caracteres.");
         }
@@ -25,11 +23,10 @@ export default class Validade {
             throw new ValidationException("A descrição deve ter no máximo 1000 caracteres.");
         }
 
-        //Situação
         if(situation && situation > 1){
             throw new ValidationException("A situação deve ter no maximo 1 caractere.");
         }
-        // Data limite
+    
         if (!dateLimit) {
             throw new ValidationException("A data limite deve estar presente.");
         }

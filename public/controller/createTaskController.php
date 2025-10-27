@@ -8,12 +8,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $data = json_decode(file_get_contents("php://input"), true);
     
-    $titulo = trim($data["titulo"]) ?? null;
-    $descricao = trim($data["descricao"]) ?? null;
+    $title = trim($data["title"]) ?? null;
+    $description = trim($data["description"]) ?? null;
     $dateLimit = trim($data["dateLimit"]) ?? null;
     $userCreatorId = $_SESSION['user']['idPublic'] ?? null;
 
-    $taskService->create($titulo, $descricao, $dateLimit, $userCreatorId);
+    $taskService->create($title, $description, $dateLimit, $userCreatorId);
 
 } else {
 

@@ -5,7 +5,6 @@ export class Validade{
     register(name, email, password, passwordConfirm) {
         const regexEmail = /^[^\s@]+@[^\s@]+\.com$/;
 
-        //Name
         if(!name){
             throw new ValidationException("nome não pode ser vazio.");
         }
@@ -13,9 +12,11 @@ export class Validade{
             throw new ValidationException("nome entre 2 e 100 caracteres.");
         }
 
-        //Email
         if(!email){
             throw new ValidationException("E-mail não pode ser vazio.");
+        }
+        if(!regexEmail.test(email)){
+            throw new ValidationException("Email inválido.");
         }
 
         if(email.length > 150){
@@ -26,7 +27,6 @@ export class Validade{
             throw new ValidationException("Email inválido.");
         }
         
-        //Password / passwordConfirm
         if(!password){
             throw new ValidationException("A senha não pode ser vazio.");
         }

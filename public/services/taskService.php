@@ -20,13 +20,13 @@ class taskService{
 
     }
 
-    public function create($titulo, $descricao, $dateLimit, $userCreatorId){
+    public function create($title, $description, $dateLimit, $userCreatorId){
 
         try{
 
-            $this->validade->requestTaskRegister($titulo, $descricao, $dateLimit, $userCreatorId);
+            $this->validade->requestTaskRegister($title, $description, $dateLimit, $userCreatorId);
 
-            $taskSave = $this->taskRepository->taskSave($titulo, $descricao, $dateLimit, $userCreatorId);
+            $taskSave = $this->taskRepository->taskSave($title, $description, $dateLimit, $userCreatorId);
 
             if(!$taskSave){
 
@@ -47,13 +47,13 @@ class taskService{
         }
     }
 
-    public function edit($titulo, $descricao, $situation, $dateLimit, $idTask, $idPublicUser){
+    public function edit($title, $description, $situation, $dateLimit, $idTask, $idPublicUser){
 
         try{
 
-            $this->validade->requestTaskEdit($titulo, $descricao, $situation, $dateLimit, $idTask, $idPublicUser);
+            $this->validade->requestTaskEdit($title, $description, $situation, $dateLimit, $idTask, $idPublicUser);
 
-            $taskEdit = $this->taskRepository->editTask($titulo, $descricao, $situation, $dateLimit, $idTask, $idPublicUser);
+            $taskEdit = $this->taskRepository->editTask($title, $description, $situation, $dateLimit, $idTask, $idPublicUser);
 
             if(!$taskEdit){
 
@@ -80,8 +80,6 @@ class taskService{
 
             $tasks = $this->taskRepository->getTasks($idUser, $page);
 
-            error_log("Tasks: " . print_r($tasks, true));
-
             if($tasks['isOk'] === false){
 
                 $this->response->error(400, "Erro ao buscar as tarefas do usuario.");
@@ -107,8 +105,6 @@ class taskService{
             $this->validade->requestTaskFilter($title, $description, $situation, $order, $dateStart, $endDate, $userCreatorId);
 
             $tasks = $this->taskRepository->filterTask($page, $title, $description, $situation, $order, $dateStart, $endDate, $userCreatorId);
-
-            error_log("Tasks: " . print_r($tasks, true));
 
             if($tasks['isOk'] === false){
 

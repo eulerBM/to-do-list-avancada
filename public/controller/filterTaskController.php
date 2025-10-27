@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $page = trim($_GET['page']) ?? null;
     $title = strtolower(trim($_GET['title'])) ?? null;
     $description = strtolower(trim($_GET['description'])) ?? null;
-    $situation = trim($_GET['situation']) ?? null;
+    $situation = strtolower(trim($_GET['situation'])) ?? null;
     $order = strtolower(trim($_GET['order'])) ?? null;
     $dateStart = trim($_GET['dateStart']) ?? null;
     $endDate = trim($_GET['endDate']) ?? null;

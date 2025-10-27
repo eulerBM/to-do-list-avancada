@@ -16,9 +16,6 @@ export default class alertExceptions {
 
   }
 
-  
-
-
   #createAlert(messageExceptions, type = "warning", time = 4) {
 
     const alert = document.createElement("div");

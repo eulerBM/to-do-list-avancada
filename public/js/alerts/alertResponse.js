@@ -17,7 +17,6 @@ export default class AlertResponse {
         window.location.href = '/dashboard';
             
       }, 3000);
-
     }
   }
 
@@ -32,15 +31,12 @@ export default class AlertResponse {
         window.location.href = '/login';
             
       }, 3000);
-
     }
   }
 
   normalShow() {
     return this.#createAlert(this.message, this.status);
   }
-
-
 
   #createAlert(message, status) {
 
@@ -59,9 +55,7 @@ export default class AlertResponse {
     alert.className = `alert alert-${this.#type}`;
     alert.role = "alert";
     alert.textContent = message;
-
     document.body.prepend(alert);
-
     setTimeout(() => alert.remove(), 5000);
   }
 }

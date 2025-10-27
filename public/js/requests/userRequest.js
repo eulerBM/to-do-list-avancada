@@ -3,6 +3,7 @@ export class Request {
 
     urlLogin = "controller/loginUserController.php";
     urlRegister = "controller/createUserController.php";
+    messageDefault = "Erro ao tentar se conectar com o servidor.";
 
     async login(data) {
         try {
@@ -19,7 +20,7 @@ export class Request {
 
         } catch (error) {
 
-            throw new Error("Erro ao tentar se conectar com o servidor.")
+            throw new Error(this.messageDefault)
 
         }
   
@@ -39,9 +40,7 @@ export class Request {
 
         } catch (error){
 
-            throw new Error("Erro ao tentar se conectar com o servidor.")
+            throw new Error(this.messageDefault)
         }
     }
-
-    
 }

@@ -12,7 +12,7 @@ class taskRepository
         $this->pdo = Database::getConnection();
     }
 
-    public function taskSave($titulo, $descricao, $dateLimit, $userCreatorId)
+    public function taskSave($title, $description, $dateLimit, $userCreatorId)
     {
 
         try {
@@ -24,26 +24,25 @@ class taskRepository
 
             $stmt->execute([
                 ':user_creator_id' => $userCreatorId,
-                ':title' => $titulo,
-                ':description' => $descricao,
+                ':title' => $title,
+                ':description' => $description,
                 ':timeout' => $dateLimit
             ]);
 
             return true;
+            
         } catch (PDOException $e) {
 
             return false;
+
         }
     }
 
     public function getTasks($userId, $page)
     {
 
-        $limit = 2;
-
         try {
 
-            // 1️⃣ Conta total de tarefas do usuário
             $countStmt = $this->pdo->prepare("
             SELECT COUNT(*) as total
             FROM task
@@ -52,14 +51,23 @@ class taskRepository
 
             $countStmt->bindValue(':userId', $userId, PDO::PARAM_STR);
             $countStmt->execute();
-            $totalTasks = (int) $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+        
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM task WHERE user_creator_id = :userId AND situation = 0");
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+            $stmt->execute();
+            $totalPendentes = (int) $stmt->fetchColumn();
 
-            $totalPages = ceil($totalTasks / 4);
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM task WHERE user_creator_id = :userId AND situation = 1");
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+            $stmt->execute();
+            $totalConcluidas = (int) $stmt->fetchColumn();
 
-            // Calcula o offset (de onde começa)
-            $offset = ($page - 1) * $limit;
+            $limitPerType = 2;
+            $totalPages = max(ceil($totalPendentes / $limitPerType), ceil($totalConcluidas / $limitPerType));
+    
+            $limitPerType = 2;
+            $offsetPerType = ($page - 1) * $limitPerType;
 
-            // Query usando UNION ALL para pegar 2 pendentes + 2 concluídas
             $stmt = $this->pdo->prepare("
                 (
                     SELECT idPublic, title, description, situation, timeout, created_at, NULL AS total_pending, NULL AS total_completed
@@ -68,7 +76,7 @@ class taskRepository
                         FROM task
                         WHERE user_creator_id = :userId AND situation = 0
                         ORDER BY created_at DESC
-                        LIMIT $limit OFFSET $offset
+                        LIMIT $limitPerType OFFSET $offsetPerType
                     ) AS pending
                 )
                 UNION ALL
@@ -79,7 +87,7 @@ class taskRepository
                         FROM task
                         WHERE user_creator_id = :userId AND situation = 1
                         ORDER BY created_at DESC
-                        LIMIT $limit OFFSET $offset
+                        LIMIT $limitPerType OFFSET $offsetPerType
                     ) AS completed
                 )
 
@@ -88,12 +96,9 @@ class taskRepository
             $stmt->execute();
             $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Separar pendentes e concluídas no array de retorno
             $pending = array_filter($tasks, fn($t) => $t['situation'] == 0);
             $completed = array_filter($tasks, fn($t) => $t['situation'] == 1);
 
-
-            // Juntando tudo em um array só
             $tasks = array_merge(
                 array_values($pending),
                 array_values($completed)
@@ -114,59 +119,73 @@ class taskRepository
     }
 
     public function filterTask($page, $title, $description, $situation, $order, $dateStart, $endDate, $userCreatorId)
-{
-    $conditions = [];
-    $params = [];
+    {
+        $conditions = [];
+        $params = [];
+        $situationConverted = ($situation === 'pendente') ? 0 : (($situation === 'concluida') ? 1 : null);
 
-    if (!empty($title)) {
-        $conditions[] = "LOWER(title) LIKE :title";
-        $params[':title'] = "%$title%";
-    }
-
-    if (!empty($description)) {
-        $conditions[] = "LOWER(description) LIKE :description";
-        $params[':description'] = "%$description%";
-    }
-    if(isset($situation)){
-        $conditions[] = "situation = :situation";
-        $params[':situation'] = $situation;
-    }
-    if (!empty($dateStart)) {
-        $conditions[] = "timeout >= :dateStart";
-        $params[':dateStart'] = $dateStart;
-    }
-
-    if (!empty($endDate)) {
-        $conditions[] = "timeout <= :endDate";
-        $params[':endDate'] = $endDate;
-    }
-
-    $conditions[] = "user_creator_id = :userCreatorId";
-    $params[':userCreatorId'] = $userCreatorId;
-
-    // Base WHERE
-    $where = "";
-    if (count($conditions) > 0) {
-        $where = "WHERE " . implode(" AND ", $conditions);
-    }
-
-    // Ordenação
-    $orderBy = "";
-    if (!empty($order)) {
-        $order = strtolower($order);
-        if ($order === 'asc') {
-            $orderBy = "ORDER BY created_at ASC";
-        } elseif ($order === 'desc') {
-            $orderBy = "ORDER BY created_at DESC";
+        if (!empty($title)) {
+            $conditions[] = "LOWER(title) LIKE :title";
+            $params[':title'] = "%$title%";
         }
-    }
 
-    // 🔹 Paginação real: 2 pendentes + 2 concluídas por página
-    $limitPerType = 2;
-    $offsetPerType = ($page - 1) * $limitPerType;
+        if (!empty($description)) {
+            $conditions[] = "LOWER(description) LIKE :description";
+            $params[':description'] = "%$description%";
+        }
+        if ($situationConverted === 0 || $situationConverted === 1) {
+            $conditions[] = "situation = :situation";
+            $params[':situation'] = $situationConverted;
+        }
+        if (!empty($dateStart)) {
+            $conditions[] = "timeout >= :dateStart";
+            $params[':dateStart'] = $dateStart;
+        }
 
-    // 🔹 Query final (2 pendentes + 2 concluídas)
-    $sql = "
+        if (!empty($endDate)) {
+            $conditions[] = "timeout <= :endDate";
+            $params[':endDate'] = $endDate;
+        }
+
+        $conditions[] = "user_creator_id = :userCreatorId";
+        $params[':userCreatorId'] = $userCreatorId;
+
+        $where = "";
+        if (count($conditions) > 0) {
+            $where = "WHERE " . implode(" AND ", $conditions);
+        }
+
+        $orderBy = "";
+        if (!empty($order)) {
+            $order = strtolower($order);
+            if ($order === 'asc') {
+                $orderBy = "ORDER BY created_at ASC";
+            } elseif ($order === 'desc') {
+                $orderBy = "ORDER BY created_at DESC";
+            }
+        }
+
+        $limitPerType = 2;
+        $offsetPerType = ($page - 1) * $limitPerType;
+
+        if ($situationConverted === 0 || $situationConverted === 1) {
+
+            $limitTotal = $limitPerType;
+
+            $sql = "
+        (
+            SELECT idPublic, title, description, situation, timeout, created_at
+            FROM task
+            $where
+            $orderBy
+            LIMIT $limitPerType OFFSET $offsetPerType
+        )
+    ";
+        } else {
+
+            $limitTotal = $limitPerType * 2;
+
+            $sql = "
         (
             SELECT idPublic, title, description, situation, timeout, created_at
             FROM task
@@ -185,52 +204,53 @@ class taskRepository
             LIMIT $limitPerType OFFSET $offsetPerType
         )
     ";
-
-    // 🔹 Contar total de registros para calcular totalPages (considerando ambos os tipos)
-    $countSql = "SELECT COUNT(*) AS total FROM task $where";
-    $countStmt = $this->pdo->prepare($countSql);
-    $countStmt->execute($params);
-    $totalRows = (int)$countStmt->fetchColumn();
-
-    $limitTotal = $limitPerType * 2;
-    $totalPages = ceil($totalRows / $limitTotal);
-
-    try {
-        $stmt = $this->pdo->prepare($sql);
-        foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value);
         }
-        $stmt->execute();
-        $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        return [
-            'isOk' => true,
-            'data' => $tasks,
-            'message' => 'Tarefas filtradas.',
-            'totalPages' => $totalPages
-        ];
-    } catch (PDOException $e) {
-        return [
-            'isOk' => false,
-            'message' => 'Erro ao buscar tarefas: ' . $e->getMessage()
-        ];
+        $countSql = "SELECT COUNT(*) AS total FROM task $where";
+        $countStmt = $this->pdo->prepare($countSql);
+        $countStmt->execute($params);
+        $totalRows = (int)$countStmt->fetchColumn();
+
+
+        $totalPages = ceil($totalRows / $limitTotal);
+
+        try {
+
+            $stmt = $this->pdo->prepare($sql);
+            foreach ($params as $key => $value) {
+                $stmt->bindValue($key, $value);
+            }
+            $stmt->execute();
+            $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return [
+                'isOk' => true,
+                'data' => $tasks,
+                'message' => 'Tarefas filtradas.',
+                'totalPages' => $totalPages
+            ];
+        } catch (PDOException $e) {
+            return [
+                'isOk' => false,
+                'message' => 'Erro ao buscar tarefas filtradas: ' . $e->getMessage()
+            ];
+        }
     }
-}
 
 
-    public function editTask($titulo, $descricao, $situation, $dateLimit, $idTask, $idPublicUser)
+    public function editTask($title, $description, $situation, $dateLimit, $idTask, $idPublicUser)
     {
 
         $fields = [];
         $params = [':idTask' => $idTask, ':idPublicUser' => $idPublicUser];
 
-        if ($titulo !== null && $titulo !== '') {
+        if ($title !== null && $title !== '') {
             $fields[] = "title = :titulo";
-            $params[':titulo'] = $titulo;
+            $params[':titulo'] = $title;
         }
-        if ($descricao !== null && $descricao !== '') {
+        if ($description !== null && $description !== '') {
             $fields[] = "description = :descricao";
-            $params[':descricao'] = $descricao;
+            $params[':descricao'] = $description;
         }
         if ($situation !== null && $situation !== '') {
             $fields[] = "situation = :situation";
@@ -254,6 +274,7 @@ class taskRepository
             $stmt->execute($params);
 
             return $stmt->rowCount() > 0;
+
         } catch (PDOException $e) {
 
             return false;

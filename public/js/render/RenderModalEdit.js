@@ -26,8 +26,8 @@ export default class RenderModalEdit {
             const data = Object.fromEntries(formData.entries());
 
             const taskData = {
-                titulo: data.title === title ? null : data.title,
-                descricao: data.description === description ? null : data.description,
+                title: data.title === title ? null : data.title,
+                description: data.description === description ? null : data.description,
                 situation: data.situation === situation ? null : data.situation,
                 dateLimit: data.timeout === timeout ? null : data.timeout,
                 idTask: idTask,
@@ -63,7 +63,7 @@ export default class RenderModalEdit {
 
     htmlEditTask(title, description, situation, timeout, idTask) {
 
-        let statusHtml = situation === 0 ? `<option value="0" selected>pendente</option>
+        let situationHtml = situation === 0 ? `<option value="0" selected>pendente</option>
     <option value="1">concluída</option>` : `<option value="1" selected>concluída</option><option value="0">pendente</option>`
 
         const itemHTML = `
@@ -80,17 +80,17 @@ export default class RenderModalEdit {
                 <div class="modal-body">
                     <form id="formTaskEdit" data-id="${idTask}">
                         <div class="mb-3 text-center">
-                            <label for="titulo" class="form-label">Título</label>
+                            <label for="title" class="form-label">Título</label>
                             <input type="text" class="form-control form-control-sm" id="title" name="title" placeholder="Digite o título" value="${title}">
                         </div>
                         <div class="mb-3 text-center">
-                            <label for="descricao" class="form-label">Descrição</label>
+                            <label for="description" class="form-label">Descrição</label>
                             <textarea class="form-control form-control-sm" id="description" name="description" rows="3" placeholder="Descrição">${description}</textarea>
                         </div>
                         <div class="mb-3 text-center">
-                            <label for="situacao" class="form-label">Situação</label>
+                            <label for="situation" class="form-label">Situação</label>
                             <select class="form-control form-control-sm" id="situation" name="situation">
-                                ` + statusHtml + `
+                                ` + situationHtml + `
                                 
                             </select>
                         </div>
