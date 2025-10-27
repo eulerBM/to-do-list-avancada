@@ -12,7 +12,7 @@ class taskRepository
         $this->pdo = Database::getConnection();
     }
 
-    public function taskSave($titulo, $descricao, $grupo, $dateLimit, $userCreatorId)
+    public function taskSave($titulo, $descricao, $dateLimit, $userCreatorId)
     {
 
         try {
@@ -48,7 +48,8 @@ class taskRepository
             SELECT COUNT(*) as total
             FROM task
             WHERE user_creator_id = :userId
-        ");
+            ");
+
             $countStmt->bindValue(':userId', $userId, PDO::PARAM_STR);
             $countStmt->execute();
             $totalTasks = (int) $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
@@ -112,79 +113,110 @@ class taskRepository
         }
     }
 
-    public function filterTask($title, $description, $situation, $order, $group, $dateStart, $endDate, $userCreatorId)
-    {
+    public function filterTask($page, $title, $description, $situation, $order, $dateStart, $endDate, $userCreatorId)
+{
+    $conditions = [];
+    $params = [];
 
-        $conditions = [];
-        $params = [];
+    if (!empty($title)) {
+        $conditions[] = "LOWER(title) LIKE :title";
+        $params[':title'] = "%$title%";
+    }
 
+    if (!empty($description)) {
+        $conditions[] = "LOWER(description) LIKE :description";
+        $params[':description'] = "%$description%";
+    }
+    if(isset($situation)){
+        $conditions[] = "situation = :situation";
+        $params[':situation'] = $situation;
+    }
+    if (!empty($dateStart)) {
+        $conditions[] = "timeout >= :dateStart";
+        $params[':dateStart'] = $dateStart;
+    }
 
-        if (!empty($title)) {
-            $conditions[] = "LOWER(title) LIKE :title";
-            $params[':title'] = "%$title%";
-        }
+    if (!empty($endDate)) {
+        $conditions[] = "timeout <= :endDate";
+        $params[':endDate'] = $endDate;
+    }
 
-        if (!empty($description)) {
-            $conditions[] = "LOWER(description) LIKE :description";
-            $params[':description'] = "%$description%";
-        }
+    $conditions[] = "user_creator_id = :userCreatorId";
+    $params[':userCreatorId'] = $userCreatorId;
 
-        if ($situation !== null && $situation !== '') {
-            $conditions[] = "situation = :situation";
-            $params[':situation'] = $situation;
-        }
+    // Base WHERE
+    $where = "";
+    if (count($conditions) > 0) {
+        $where = "WHERE " . implode(" AND ", $conditions);
+    }
 
-        if (!empty($dateStart)) {
-            $conditions[] = "timeout >= :dateStart";
-            $params[':dateStart'] = $dateStart;
-        }
-
-        if (!empty($endDate)) {
-            $conditions[] = "timeout <= :endDate";
-            $params[':endDate'] = $endDate;
-        }
-
-        // Filtro obrigatório: ID do criador
-        $conditions[] = "user_creator_id = :userCreatorId";
-        $params[':userCreatorId'] = $userCreatorId;
-
-        // Monta o SQL dinâmico
-        $sql = "SELECT idPublic, title, description, situation, timeout, created_at FROM task";
-        if (count($conditions) > 0) {
-            $sql .= " WHERE " . implode(" AND ", $conditions);
-        }
-        // Verifica se veio o parâmetro $order
-        if (!empty($order)) {
-            // Normaliza o valor para minúsculo
-            $order = strtolower($order);
-
-            // Define o sentido da ordenação de forma segura
-            if ($order === 'asc') {
-                $sql .= " ORDER BY created_at ASC";
-            } elseif ($order === 'desc') {
-                $sql .= " ORDER BY created_at DESC";
-            }
-        }
-
-        try {
-            error_log($sql);
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute($params);
-            $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return [
-                'isOk' => true,
-                'data' => $tasks,
-                'totalPages' => null
-            ];
-        } catch (PDOException $e) {
-
-            return [
-                'isOk' => false,
-                'message' => 'Erro ao buscar tarefas: ' . $e->getMessage()
-            ];
+    // Ordenação
+    $orderBy = "";
+    if (!empty($order)) {
+        $order = strtolower($order);
+        if ($order === 'asc') {
+            $orderBy = "ORDER BY created_at ASC";
+        } elseif ($order === 'desc') {
+            $orderBy = "ORDER BY created_at DESC";
         }
     }
+
+    // 🔹 Paginação real: 2 pendentes + 2 concluídas por página
+    $limitPerType = 2;
+    $offsetPerType = ($page - 1) * $limitPerType;
+
+    // 🔹 Query final (2 pendentes + 2 concluídas)
+    $sql = "
+        (
+            SELECT idPublic, title, description, situation, timeout, created_at
+            FROM task
+            $where
+            AND situation = 0
+            $orderBy
+            LIMIT $limitPerType OFFSET $offsetPerType
+        )
+        UNION ALL
+        (
+            SELECT idPublic, title, description, situation, timeout, created_at
+            FROM task
+            $where
+            AND situation = 1
+            $orderBy
+            LIMIT $limitPerType OFFSET $offsetPerType
+        )
+    ";
+
+    // 🔹 Contar total de registros para calcular totalPages (considerando ambos os tipos)
+    $countSql = "SELECT COUNT(*) AS total FROM task $where";
+    $countStmt = $this->pdo->prepare($countSql);
+    $countStmt->execute($params);
+    $totalRows = (int)$countStmt->fetchColumn();
+
+    $limitTotal = $limitPerType * 2;
+    $totalPages = ceil($totalRows / $limitTotal);
+
+    try {
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+        $stmt->execute();
+        $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return [
+            'isOk' => true,
+            'data' => $tasks,
+            'message' => 'Tarefas filtradas.',
+            'totalPages' => $totalPages
+        ];
+    } catch (PDOException $e) {
+        return [
+            'isOk' => false,
+            'message' => 'Erro ao buscar tarefas: ' . $e->getMessage()
+        ];
+    }
+}
+
 
     public function editTask($titulo, $descricao, $situation, $dateLimit, $idTask, $idPublicUser)
     {

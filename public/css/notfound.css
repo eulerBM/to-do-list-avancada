@@ -1,0 +1,88 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a, #343a40);
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Container central */
+.notfound-container {
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Número 404 grande */
+.notfound-container h1 {
+    font-size: 8rem;
+    color: #ff4c4c;
+    text-shadow: 0 0 20px rgba(255, 76, 76, 0.6);
+    margin-bottom: 10px;
+    animation: pulse 2s infinite;
+}
+
+/* Título secundário */
+.notfound-container h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #f8f9fa;
+}
+
+/* Texto de descrição */
+.notfound-container p {
+    font-size: 1rem;
+    color: #ccc;
+    margin-bottom: 25px;
+}
+
+/* Botão */
+.btn-home {
+    display: inline-block;
+    padding: 10px 25px;
+    background: #ff4c4c;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-home:hover {
+    background: #ff6666;
+    transform: scale(1.05);
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { text-shadow: 0 0 20px rgba(255, 76, 76, 0.6); }
+    50% { text-shadow: 0 0 40px rgba(255, 76, 76, 0.9); }
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .notfound-container h1 {
+        font-size: 5rem;
+    }
+
+    .notfound-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .notfound-container p {
+        font-size: 0.9rem;
+    }
+}

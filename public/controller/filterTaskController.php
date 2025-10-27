@@ -7,19 +7,16 @@ require_once '../services/taskService.php';
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $taskService = new TaskService();
 
+    $page = trim($_GET['page']) ?? null;
     $title = strtolower(trim($_GET['title'])) ?? null;
     $description = strtolower(trim($_GET['description'])) ?? null;
     $situation = trim($_GET['situation']) ?? null;
     $order = strtolower(trim($_GET['order'])) ?? null;
-    $group = trim($_GET['group']) ?? null;
     $dateStart = trim($_GET['dateStart']) ?? null;
     $endDate = trim($_GET['endDate']) ?? null;
     $userCreatorId = $_SESSION['user']['idPublic'] ?? null;
 
-    error_log("Titulo: " . $order);
-    
-
-    $taskService->filterTask($title, $description, $situation, $order, $group, $dateStart, $endDate, $userCreatorId);
+    $taskService->filterTask($page, $title, $description, $situation, $order, $dateStart, $endDate, $userCreatorId);
 
 } else {
 

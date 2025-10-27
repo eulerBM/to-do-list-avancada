@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: /login");
+    exit;
+}
 include 'includes/header.php';
 
 ?>
@@ -54,204 +58,44 @@ include 'includes/header.php';
         </ul>
     </nav>
 
-
-    <!-- MODALS -->
-    <div id="modalEditTask"></div>
-    <div id="modalDeleteTask"></div>
-    <div id="modalCreateTask"></div>
-    <div id="modalFiltrosTask"></div>
-
-
 </div>
 
 <script type="module">
-    import {
-        fetchCreateTask,
-        fetchDeleteTask,
-        fetchEditTask
-    } from "./js/api.js";
-    import {
-        renderTasks, renderTasksFilter
-    } from "./js/renderTasks.js";
-    import {
-        renderModalEdit
-    } from "./js/renderModalEdit.js";
-    import {
-        renderModalDelete
-    } from "./js/renderModalDelete.js";
-    import {
-        renderModalCreate
-    } from "./js/renderModalCreate.js";
-    import {
-        renderModalFilter
-    } from "./js/renderModalFilter.js";
+    
+    import RenderModalCreate from "./js/render/RenderModalCreate.js";
+    import RenderModalDelete from "./js/render/RenderModalDelete.js";
+    import RenderModalEdit from "./js/render/RenderModalEdit.js";
+    import RenderModalFilter from "./js/render/RenderModalFilter.js";
+    import RenderTasks from './js/render/RenderTasks.js';
 
+    const modalCreateTask = new RenderModalCreate();
+    const modalDeleteTask = new RenderModalDelete();
+    const modalEditTask = new RenderModalEdit();
+    const modalFilterTask = new RenderModalFilter();
+    const renderTasks = new RenderTasks();
+    
 
-    renderTasks("task-list");
+    await renderTasks.renderTasksWithPagination();
 
-    //Mudar a paginação
-    window.changePageTask = function(page) {
-        renderTasks("task-list", page)
+    //Create Task
+    window.createTask = () => modalCreateTask.render();
 
-    }
+    //Delete Task
+    window.deleteTask = (title, idTask) => modalDeleteTask.render(title, idTask);
 
-    //Quando apertar filtros 
-    window.filterTask = function() {
+    //Edit Task
+    window.editTask = (title, description, situation, timeout, idTask) => modalEditTask.render(title, description, situation, timeout, idTask);
 
-        renderModalFilter()
+    //Filter Task
+     window.filterTask = () => modalFilterTask.render();
 
-        const modalElement = document.getElementById("modalFilter");
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
+    //Paginação
+    window.changePageTask = (page) => renderTasks.renderTasksWithPagination(page); 
 
-        formTaskCreator.addEventListener("submit", async (e) => {
-            e.preventDefault();
+    
 
-            console.log("to chamando a função filter")
+    
 
-            const formData = new FormData(formTaskCreator);
-            const data = Object.fromEntries(formData.entries());
-
-            const taskData = {
-                title: data.title,
-                description: data.description,
-                situation: data.situation,
-                order: data.order,
-                group: data.group,
-                dateStart: data.dateStart,
-                endDate: data.endDate
-            };
-
-            console.log("dados filter enviados :", data)
-
-            try {
-
-                renderTasksFilter(taskData);
-                modal.hide();
-                modalElement.remove();
-
-            } catch (err) {
-
-                console.error("Erro ao filtra tarefa:", err);
-
-            }
-        });
-    }
-    //Quando apertar criar task
-    window.createTask = function() {
-
-        renderModalCreate()
-
-        const modalElement = document.getElementById("modalTarefa");
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-
-        formTaskCreator.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(formTaskCreator);
-            const data = Object.fromEntries(formData.entries());
-
-            const taskData = {
-                titulo: data.titulo,
-                descricao: data.descricao,
-                grupo: data.grupo,
-                dateLimit: data.dateLimit
-            };
-
-            try {
-
-                await fetchCreateTask(taskData);
-                modal.hide();
-                modalElement.remove();
-                renderTasks("task-list");
-
-            } catch (err) {
-
-                console.error("Erro ao deletar tarefa:", err);
-
-            }
-        });
-    }
-
-    //Quando apertar Excluir
-    window.deleteTask = function(title, idTask) {
-
-        renderModalDelete(title, idTask);
-
-        const modalElement = document.getElementById("modalExcluir");
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-
-        //Deletar Tarefa
-        const formDelete = modalElement.querySelector("#formDeletTask");
-        formDelete.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-
-            try {
-
-                await fetchDeleteTask(idTask);
-                modal.hide();
-                modalElement.remove();
-                renderTasks("task-list");
-
-            } catch (err) {
-
-                console.error("Erro ao deletar tarefa:", err);
-
-            }
-        });
-    };
-
-    //Quando apertar editar
-    window.editTask = function(title, description, situation, group, timeout, idTask) {
-
-        console.log(title, description, situation, group, timeout, idTask);
-
-
-        renderModalEdit(title, description, status, group, timeout, idTask);
-
-        const modalElement = document.getElementById("modalTarefaEditar");
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-
-        const formEdit = document.getElementById("formTaskEdit");
-
-        if (!formEdit) return;
-
-        // Remove listener antigo para não duplicar
-        formEdit.replaceWith(formEdit.cloneNode(true));
-        const newFormEdit = document.getElementById("formTaskEdit");
-
-        newFormEdit.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(newFormEdit);
-            const data = Object.fromEntries(formData.entries());
-
-            const taskData = {
-                titulo: data.titulo === title ? null : data.titulo,
-                descricao: data.descricao === description ? null : data.descricao,
-                situation: data.situation === situation ? null : data.situation,
-                grupo: data.grupo === group ? null : data.grupo,
-                dateLimit: data.dataHora === timeout ? null : data.dataHora,
-                idTask: idTask,
-            };
-
-            try {
-
-                await fetchEditTask(taskData);
-                renderTasks("task-list");
-                modal.hide();
-
-            } catch (err) {
-
-                console.error("Erro ao editar tarefa:", err);
-
-            }
-        });
-    };
 </script>
 
 <?php include 'includes/footer.php'; ?>

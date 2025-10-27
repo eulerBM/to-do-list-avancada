@@ -52,11 +52,11 @@ class validade{
         }
     }
 
-    public function requestTaskRegister($titulo, $descricao, $grupo, $dateLimit, $userCreatorId){
+    public function requestTaskRegister($titulo, $descricao, $dateLimit, $userCreatorId){
 
         // Validação titulo
-        if(empty($titulo)){
-            throw new ValidationException("titulo inválido.");
+        if(empty($titulo) || strlen($titulo) < 5){
+            throw new ValidationException("O titulo deve ter no minimo 5 caracteres.");
         }
         if(strlen($titulo) > 200){
             throw new ValidationException("O titulo deve ter no maximo 200 caracteres.");
@@ -67,12 +67,7 @@ class validade{
             throw new ValidationException("A descrição deve ter pelo menos 5 caracteres.");
         }
         if(strlen($descricao) > 1000){
-            throw new ValidationException("A senha deve ter no maximo 1000 caracteres.");
-        }
-
-        // Validação de grupo
-        if(strlen($grupo) > 1000){
-            throw new ValidationException("O grupo deve ter no maximo 1000 caracteres.");
+            throw new ValidationException("A descrição deve ter no maximo 1000 caracteres.");
         }
 
         // Validação date limite
@@ -92,7 +87,7 @@ class validade{
         }
     }
 
-    public function requestTaskEdit($titulo, $descricao, $situation, $grupo, $dateLimit, $idTask, $idPublicUser){
+    public function requestTaskEdit($titulo, $descricao, $situation, $dateLimit, $idTask, $idPublicUser){
 
         if(empty($titulo) && empty($descricao) && empty($situation) && empty($dateLimit)){
 
@@ -100,35 +95,27 @@ class validade{
         }
 
         // Validação titulo
-        if($titulo != null){
+        if(!empty($titulo )){
             if(strlen($titulo) > 200){
                 throw new ValidationException("O titulo deve ter no maximo 200 caracteres.");
             }
         }
 
         // Validação descrição
-        if($descricao != null){
+        if(!empty($descricao)){
             if(strlen($descricao) < 5 || strlen($descricao) > 1000){
                 throw new ValidationException("A descrição deve ter entre 5 ou 1000 caracteres.");
             }
         }
 
         // Validação situação
-        if($situation != null){
+        if(!empty($situation)){
             if(strlen($situation) > 10){
                 throw new ValidationException("A situação deve ter no maximo 10 caracteres.");
             }
         }
-
-        // Validação de grupo
-        if($grupo != null){
-            if(strlen($grupo) > 1000){
-                throw new ValidationException("O grupo deve ter no maximo 1000 caracteres.");
-            }
-        }
-
         // Validação date limite
-        if($dateLimit != null){
+        if(!empty($dateLimit) != null){
             if(strlen($dateLimit) > 50){
                 throw new ValidationException("Data limite muito grande.");
             }
@@ -150,62 +137,40 @@ class validade{
 
     }
 
-     public function requestTaskFilter($title, $description, $situation, $order, $group, $dateStart, $endDate, $userCreatorId){
+     public function requestTaskFilter($title, $description, $situation, $order, $dateStart, $endDate, $userCreatorId){
 
 
-        if(empty($title) && empty($description) && empty($situation) && empty($order) && empty($dateStart) && empty($endDate) ){
-
+        if(empty($title) && empty($description) && !isset($situation) && empty($order) && empty($dateStart) && empty($endDate) ){
             throw new ValidationException("Por favor escolha os filtros.");
         }
 
         // Validação titulo
-        if(!empty($title)){
-            if(strlen($title) < 5 || strlen($title) > 200 ){
-                throw new ValidationException("O titulo deve ter entre 5 ou 200 caracteres.");
-            }
-            
+        if(!empty($title) && strlen($title) > 200){    
+            throw new ValidationException("O titulo deve ter no maximo 200 caracteres.");   
         }
 
         // Validação descrição
-        if(!empty($description)){
-            if(strlen($description) < 5 || strlen($description) > 1000){
-                throw new ValidationException("A descrição deve ter entre 5 ou 1000 caracteres.");
-            }
+        if(!empty($description) && strlen($description) > 1000){      
+            throw new ValidationException("A descrição deve ter no maximo 1000 caracteres.");         
         }
 
         // Validação situação
-        if($situation != null){
-            if(strlen($situation) > 1){
-                throw new ValidationException("A situação deve ter no maximo 1 caractere.");
-            }
+        if(!empty($situation) && strlen($situation) > 1){
+            throw new ValidationException("A situação deve ter no maximo 1 caractere.");        
         }
 
         // Validação order
-        if(!empty($order)){
-            if($order !== "asc" && $order !== "desc"){
-                throw new ValidationException("O ordenar por deve ser asc ou desc.");
-            }
+        if(!empty($order) && $order !== "asc" && $order !== "desc"){        
+            throw new ValidationException("O ordenar por deve ser asc ou desc.");          
         }
-
-        // Validação de grupo
-        if($group != null){
-            if(strlen($group) > 1000){
-                throw new ValidationException("O grupo deve ter no maximo 1000 caracteres.");
-            }
-        }
-
         // Validação date limite
-        if($dateStart != null){
-            if(strlen($dateStart) > 50){
-                throw new ValidationException("Data limite muito grande.");
-            }
+        if(!empty($dateStart) && strlen($dateStart) > 50){
+            throw new ValidationException("Data limite muito grande.");
         }
 
         // Validação date final
-        if($endDate != null){
-            if(strlen($dateStart) > 50){
-                throw new ValidationException("Data final muito grande.");
-            }
+        if(!empty($endDate) && strlen($dateStart) > 50){
+            throw new ValidationException("Data final muito grande."); 
         }
 
         // Validação id user criador

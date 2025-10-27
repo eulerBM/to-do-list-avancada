@@ -8,6 +8,7 @@ services:
       MYSQL_DATABASE: to-do_list
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
+      TZ: "America/Sao_Paulo"
     ports:
       - "3306:3306"
     volumes:

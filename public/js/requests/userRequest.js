@@ -41,7 +41,7 @@ export class Request {
 
             throw new Error("Erro ao tentar se conectar com o servidor.")
         }
-        
-
     }
+
+    
 }

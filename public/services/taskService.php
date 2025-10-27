@@ -20,13 +20,13 @@ class taskService{
 
     }
 
-    public function create($titulo, $descricao, $grupo, $dateLimit, $userCreatorId){
+    public function create($titulo, $descricao, $dateLimit, $userCreatorId){
 
         try{
 
-            $this->validade->requestTaskRegister($titulo, $descricao, $grupo, $dateLimit, $userCreatorId);
+            $this->validade->requestTaskRegister($titulo, $descricao, $dateLimit, $userCreatorId);
 
-            $taskSave = $this->taskRepository->taskSave($titulo, $descricao, $grupo, $dateLimit, $userCreatorId);
+            $taskSave = $this->taskRepository->taskSave($titulo, $descricao, $dateLimit, $userCreatorId);
 
             if(!$taskSave){
 
@@ -47,11 +47,11 @@ class taskService{
         }
     }
 
-    public function edit($titulo, $descricao, $situation, $grupo, $dateLimit, $idTask, $idPublicUser){
+    public function edit($titulo, $descricao, $situation, $dateLimit, $idTask, $idPublicUser){
 
         try{
 
-            $this->validade->requestTaskEdit($titulo, $descricao, $situation, $grupo, $dateLimit, $idTask, $idPublicUser);
+            $this->validade->requestTaskEdit($titulo, $descricao, $situation, $dateLimit, $idTask, $idPublicUser);
 
             $taskEdit = $this->taskRepository->editTask($titulo, $descricao, $situation, $dateLimit, $idTask, $idPublicUser);
 
@@ -100,13 +100,13 @@ class taskService{
 
     }
 
-    public function filterTask($title, $description, $situation, $order, $group, $dateStart, $endDate, $userCreatorId){
+    public function filterTask($page, $title, $description, $situation, $order, $dateStart, $endDate, $userCreatorId){
 
         try{
 
-            $this->validade->requestTaskFilter($title, $description, $situation, $order, $group, $dateStart, $endDate, $userCreatorId);
+            $this->validade->requestTaskFilter($title, $description, $situation, $order, $dateStart, $endDate, $userCreatorId);
 
-            $tasks = $this->taskRepository->filterTask($title, $description, $situation, $order, $group, $dateStart, $endDate, $userCreatorId);
+            $tasks = $this->taskRepository->filterTask($page, $title, $description, $situation, $order, $dateStart, $endDate, $userCreatorId);
 
             error_log("Tasks: " . print_r($tasks, true));
 
@@ -116,7 +116,7 @@ class taskService{
 
             }
 
-            $this->response->getAllTasks(200, $tasks['data'], $tasks['totalPages']);
+            $this->response->getFilterTasks(200, $tasks['data'], $tasks['message'], $tasks['totalPages']);
 
         } catch (ValidationException $e){
 

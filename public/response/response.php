@@ -52,6 +52,24 @@ class response{
 
     }
 
+    public function getFilterTasks($status, $tasks, $message, $totalPages){
+
+         $data = [
+
+            "status" => $status,
+            "tasks" => $tasks,
+            "message" => $message,
+            "totalPages" => $totalPages
+            
+        ];
+
+        header("Content-Type: application/json");
+
+        echo json_encode($data);
+        exit;
+
+    }
+
     public function taskCreate($status, $message){
 
         $data = [

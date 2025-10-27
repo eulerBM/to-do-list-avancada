@@ -10,11 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
     $titulo = trim($data["titulo"]) ?? null;
     $descricao = trim($data["descricao"]) ?? null;
-    $grupo = trim($data["grupo"]) ?? null;
     $dateLimit = trim($data["dateLimit"]) ?? null;
     $userCreatorId = $_SESSION['user']['idPublic'] ?? null;
 
-    $taskService->create($titulo, $descricao, $grupo, $dateLimit, $userCreatorId);
+    $taskService->create($titulo, $descricao, $dateLimit, $userCreatorId);
 
 } else {
 
