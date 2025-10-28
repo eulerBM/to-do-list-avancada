@@ -7,9 +7,9 @@ export default class Request {
     messageDefault = "Erro ao tentar se conectar com o servidor.";
 
 
-    async getTasksWithPagination(page = 1){
+    async getTasksWithPagination(page = 1) {
 
-         try {
+        try {
 
             const response = await fetch(this.urlGetTaskWithPagination + `?page=${page}`, {
                 method: "GET",
@@ -66,6 +66,8 @@ export default class Request {
 
         } catch (error) {
 
+            console.log(error.message)
+
             throw new Error(this.messageDefault);
 
         }
@@ -87,6 +89,9 @@ export default class Request {
                 },
                 credentials: "include"
             });
+
+            const text = await response.text();
+            console.log("Resposta bruta:", text);
 
             return await response.json();
 

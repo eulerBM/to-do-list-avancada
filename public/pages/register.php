@@ -18,7 +18,11 @@
 
     <div class="mb-3 text-center col-6 mx-auto">
       <label for="inputPassword1" class="form-label form-control-sm">Senha</label>
-      <input type="password" name="password" id="inputPassword1" class="form-control form-control-sm" aria-describedby="passwordHelpBlock" placeholder="Digite sua senha" require>
+      <div class="input-group input-group-sm">
+        <input type="password" name="password" id="inputPassword1" class="form-control form-control-sm" aria-describedby="passwordHelpBlock" placeholder="Digite sua senha" require>
+        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+          <i class="bi bi-eye"></i>
+      </div>
     </div>
 
     <div class="mb-3 text-center col-6 mx-auto">
@@ -28,7 +32,7 @@
 
     <div class="mb-3 text-center col-6 mx-auto">
 
-      <button type="submit" class="btn btn-danger">Cadastrar</button>
+      <button type="submit" id="buttonRegister" class="btn btn-danger">Cadastrar</button>
 
     </div>
 
@@ -80,6 +84,18 @@
 
       }
     });
+  });
+
+  const togglePassword = document.getElementById('togglePassword');
+  const password = document.getElementById('inputPassword1');
+  const icon = togglePassword.querySelector('i');
+
+  togglePassword.addEventListener('click', () => {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+
+    icon.classList.toggle('bi-eye');
+    icon.classList.toggle('bi-eye-slash');
   });
 </script>
 

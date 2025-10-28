@@ -1,5 +1,10 @@
 <?php
 
+ob_start();
+
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 0);
+
 class response{
 
     public function userCreate($status, $message){
@@ -55,12 +60,10 @@ class response{
     public function getFilterTasks($status, $tasks, $message, $totalPages){
 
          $data = [
-
             "status" => $status,
             "tasks" => $tasks,
             "message" => $message,
             "totalPages" => $totalPages
-            
         ];
 
         header("Content-Type: application/json");

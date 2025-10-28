@@ -1,9 +1,25 @@
+version: '3.8'
+
 services:
+
+  app:
+    build: .
+    container_name: php-app-docker
+    ports:
+      - "8000:80" 
+    volumes:
+      - ./public:/var/www/html
+    depends_on:
+      - mysql-db
+    networks:
+      - taskflow-network
+
   mysql-db:
     image: mysql:8.0
     container_name: mysql-docker
     restart: always
     environment:
+      DB_HOST: mysql-db
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: to-do_list
       MYSQL_USER: admin
@@ -16,22 +32,8 @@ services:
     networks:
       - taskflow-network
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    restart: always
-    environment:
-      PMA_HOST: mysql-db
-      PMA_USER: admin
-      PMA_PASSWORD: admin
-    ports:
-      - "8081:80"
-    networks:
-      - taskflow-network
-
 volumes:
   mysql_data:
 
 networks:
   taskflow-network:
-    driver: bridge

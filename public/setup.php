@@ -9,7 +9,6 @@ class Setup {
         $migration = new Migration($pdo);
         $migration->createUsersTable();
         $migration->createTaskTable();
-        $migration->createTaskUsersTable();
         
     }
 }

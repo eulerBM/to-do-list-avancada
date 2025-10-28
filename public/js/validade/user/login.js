@@ -17,7 +17,7 @@ export class Validade{
         }
 
         if(!password){
-            throw new ValidationException("A senha não pode ser vazio");
+            throw new ValidationException("A senha não pode ser vazia");
         }
 
         if(password.length < 5){

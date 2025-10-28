@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 function handleRoutes()
 {
@@ -6,11 +7,7 @@ function handleRoutes()
     $request = parse_url($request, PHP_URL_PATH);
 
     switch ($request) {
-        case '/':
-            require __DIR__ . '/pages/home.php';
-            break;
-
-        case '/login':
+         case '/login':
             require __DIR__ . '/pages/login.php';
             break;
 

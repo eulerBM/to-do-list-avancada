@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../services/userService.php';
 require_once '../response/response.php';
 require_once '../services/taskService.php';

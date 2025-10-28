@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 header("Content-Type: application/json");
 require_once __DIR__ . '/../response/response.php';
@@ -112,6 +111,12 @@ class taskService{
 
             }
 
+            if(empty($tasks['data'])){
+
+                $this->response->error(204, "Nenhuma Tarefa encontrada.");
+
+            }
+
             $this->response->getFilterTasks(200, $tasks['data'], $tasks['message'], $tasks['totalPages']);
 
         } catch (ValidationException $e){
@@ -151,7 +156,5 @@ class taskService{
             $this->response->error(500, "Erro interno: " . $e->getMessage());
             
         }
-
-        
     }
 }

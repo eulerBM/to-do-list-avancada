@@ -6,7 +6,7 @@ class Database {
 
     public static function getConnection() {
         if (!self::$pdo) {
-            $host = '127.0.0.1';
+            $host = 'mysql-db';
             $dbname = 'to-do_list';
             $username = 'admin';
             $password = 'admin';
