@@ -6,7 +6,7 @@ class Database {
 
     public static function getConnection() {
         if (!self::$pdo) {
-            $host = 'mysql-db';
+            $host = 'mysql-db'; //Use 127.0.0.1 para local e mysql-db se for usar docker-compose
             $dbname = 'to-do_list';
             $username = 'admin';
             $password = 'admin';

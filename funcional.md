@@ -1,12 +1,10 @@
-<h1 align="center">🧩 Desafio Técnico – Sistema de Controle de Tarefas</h1>
+<h1 align="center">Descrição geral do sistema e suas telas</h1>
 
 <p align="center">
   <b>O sistema é uma aplicação de gerenciamento de tarefas que permite criar, editar, filtrar e organizar atividades. Ele utiliza PHP no backend, MySQL para armazenamento e uma interface moderna e responsiva no frontend.</b>
 </p>
 
----
-
-<h2 align="center">⚡ Front-End Organização</h2>
+<h2>⚡ Front-End Organização</h2>
 <ul>
     <li>📌 <b>index.php</b> – Página inicial que carrega a aplicação e define o ponto de entrada principal do sistema.</li>
     <li>📌 <b>routes.php</b> – Define as rotas e redirecionamentos das páginas do front-end.</li>
@@ -24,7 +22,7 @@
     <li>📌 <b>js/scrypt/</b> – Scripts gerais.</li> </ul>
 </ul>
 
-<h2 align="center">⚡ Back-End Organização</h2>
+<h2>⚡ Back-End Organização</h2>
 <ul>
     <li>📌 <b>controller/</b> – Camada responsável por receber as requisições.</li> 
     <li>📌 <b>database/</b> – Gerencia a conexão com o banco de dados (PDO) e configurações de acesso.</li> 
@@ -36,12 +34,44 @@
     <li>📌 <b>utils/</b> – Funções auxiliares e classes de suporte reutilizáveis por todo o back-end.</li> </ul>
 </ul>
 
+<h2>📸 Telas</h2>
+
+<h3 align="center">Tela de login</h3>
+<p align="center">
+  <img src="images/tela_login.png" alt="Tela de Login" width="600"/>
+</p>
+
+<h3 align="center">Tela de registro</h3>
+<p align="center">
+  <img src="images/tela_register.png" alt="Tela de register" width="600"/>
+</p>
+
+<h3 align="center">Tela do dashboard</h3>
+<p align="center">
+  <img src="images/tela_dashboard.png" alt="Tela de dashboard" width="600"/>
+  <p align="center">
+</p>
+</p>
+
 ---
 
-<h2 align="center">🚀 Como rodar</h2>
+<h1 align="center">Passo a passo para utilização</h1>
+
+<h2>Rotas</h2>
+
+<ul>
+    <li><b>/login</b> – Responsavel por efetuar o login no sistema.</li> 
+    <li><b>/register</b> – Responsavel por registrar os usuarios no sistema.</li>
+    <li><b>/dashboard</b> – Responsavel por mostrar, editar, filtrar e excluir tarefas.</li>  
+    <li><b>/logout</b> – Responsavel por encerrar a sessão do usuario.</li>
+</ul>
+
+Após criar conta e efetuar o login será redirecionado para o `Dashboard` podendo utilizar o sistema e suas funções.
+
+<h1 align="center">Explicação simples de como instalar e rodar o projeto localmente.</h1>
 
 <p align="center">
-  <h3>Docker → </h3>
+  <h2>Docker → </h2>
 </p>
 
 <p>
@@ -63,7 +93,7 @@ docker-compose up -d
 Entre no navegador e acesse ⭢ <a href="http://localhost:8000/" target="_blank">http://localhost:8000/</a>
 
 <p align="center">
-  <h3>Sem docker →</h3>
+  <h2>Sem docker →</h2>
 </p>
 
 <p>
@@ -106,35 +136,3 @@ Se tiver dificuldade com o MYSQL acesse <a href="https://www.youtube.com/watch?v
   php -S localhost:8000 -t public
 ```
 </p>
-
----
-
-<h2 align="center">📸 Demonstrações</h2>
-
-<h3 align="center">Tela de login</h3>
-<p align="center">
-  <img src="images/tela_login.png" alt="Tela de Login" width="600"/>
-</p>
-
-<h3 align="center">Tela de registro</h3>
-<p align="center">
-  <img src="images/tela_register.png" alt="Tela de register" width="600"/>
-</p>
-
-<h3 align="center">Tela do dashboard</h3>
-<p align="center">
-  <img src="images/tela_dashboard.png" alt="Tela de dashboard" width="600"/>
-</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
